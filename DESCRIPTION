@@ -1,0 +1,64 @@
+Package: divnn
+Type: Package
+Title: An implementation of the DeepInsight Visible Neural Network
+Version: 0.1.1
+Date: 2020-11-10
+Authors@R: 
+    person(given = "Herdiantri",
+           family = "Sufriyana",
+           role = c("aut", "cre"),
+           email = "herdiantrisufriyana@unusa.ac.id",
+           comment = c(ORCID = "0000-0001-9178-0222"))
+Depends: R (>= 4.0.2)
+Description: This package facilitates application of DeepInsight (DI) and
+    Visible Neural Network (VNN) algorithms from Alok Sharma and Michael Ku Yu,
+    respectively. The application is intended for supervised machine learning
+    by convolutional neural network (CNN). DeepInsight converts non-image
+    data into image-like data by dimensionality reduction algorithms. This
+    package maps the data into a multi-dimensional array. Meanwhile, VNN
+    determines a neural network architecture by hierarchical clustering
+    algorithms, particularly for data-driven ontology. This package generate a
+    CNN model based on the ontology using the DeepInsight array as the input.
+    However, this package includes neither dimensionality reduction nor
+    data-driven ontology inference. A comprehensive guide to orchestrate this
+    package and other packages to develop the DI-VNN model is described in this
+    package vignette. The inputs are instance-feature value data frame, outcome
+    vector, feature similarity matrix, feature three-dimensional mapping matrix,
+    and ontology source-target-similarity-relation data frame. The outputs are
+    tidy (expression) set, training array, and Keras CNN model.
+License: GPL-3
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Imports: 
+    dplyr,
+    tidyr,
+    stringr,
+    tibble,
+    ggplot2,
+    BiocGenerics,
+    Biobase,
+    pbapply,
+    matrixStats,
+    tensorflow,
+    keras
+Suggests:
+    BiocStyle,
+    knitr,
+    rmarkdown,
+    kableExtra,
+    magick,
+    BiocManager,
+    doParallel,
+    WGCNA,
+    preprocessCore,
+    limma,
+    Rtsne,
+    reticulate,
+    zeallot,
+    igraph,
+    ParBayesianOptimization,
+    testthat
+URL: https://github.com/herdiantrisufriyana/divnn
+BugReports: https://github.com/herdiantrisufriyana/divnn/issues
+VignetteBuilder: knitr
