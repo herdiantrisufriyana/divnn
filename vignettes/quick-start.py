@@ -19,7 +19,7 @@ from tensorflow.keras import layers, activations
 from tensorflow.keras.models import model_from_json
 
 # Create input example
-input=input_example()
+input=utils.example()
 
 # Create TidySet
 tidy_set=create_tidy_set(

@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from dfply import X, mutate, select, left_join, bind_cols
 from scipy.stats import pearsonr
 from sklearn.cluster import KMeans, AgglomerativeClustering
 from sklearn.decomposition import PCA
