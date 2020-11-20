@@ -1,5 +1,6 @@
 # Import modules and set GPU off
 from divnn import utils, TidySet, generator
+from divnn.ExpressionSet import exprs
 import os
 import pickle
 import pandas as pd
@@ -24,7 +25,9 @@ tidy_set=TidySet.compile(
 
 TidySet.write(tidy_set,'vignettes/quick-start-py/tidy_set_py')
 
-tidy_set=TidySet.read('vignettes/quick-start-py/tidy_set_py.ts.tar.gz')
+tidy_set=TidySet.read('vignettes/quick-start-R/tidy_set_py.ts.tar.gz')
+
+ontonet=generator.ontonet(tidy_set)
 
 ontonet=generator.ontonet(tidy_set,path='vignettes/quick-start-py/ontonet_py')
 

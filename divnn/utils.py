@@ -64,7 +64,7 @@ def example():
   ## Create example of feature three-dimensional mapping matrix
   ## This example uses PCA for simplicity
   ## DeepInsight originally uses t-SNE and kernel PCA
-  input['mapping']=PCA(n_components=3,random_state=33)
+  input['mapping']=PCA(n_components=3,random_state=99)
   input['mapping']=input['mapping'].fit_transform(input['similarity'])
   input['mapping']=pd.DataFrame(
       data=input['mapping']

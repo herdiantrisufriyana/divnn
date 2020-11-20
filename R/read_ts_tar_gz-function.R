@@ -292,8 +292,8 @@ read_ts_tar_gz=function(path){
       ,experimentData=xData
     )
 
-  if(!str_detect(others$annotation,'{^\\s}')){
-    annotation(eset)=NULL
+  if(paste0(str_split(others$annotation,'\\s')[[1]],collapse='')==''){
+    annotation(eset)=''
   }
 
   eset
