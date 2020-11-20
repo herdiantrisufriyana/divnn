@@ -21,8 +21,8 @@ from tensorflow.keras.models import model_from_json
 # Create input example
 input=utils.example()
 
-# Create TidySet
-tidy_set=create_tidy_set(
+# Compile input to TidySet
+tidy_set=tidyset.compile(
     value=input['value']
     ,outcome=input['outcome']
     ,similarity=input['similarity']

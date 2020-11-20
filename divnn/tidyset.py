@@ -3,7 +3,7 @@ import tarfile
 import math
 import regex as re
 from divnn.ExpressionSet import *
-from dfply import X, mutate, mask, select, rename,arrange
+from dfply import X, mutate, mask, select, rename, arrange, bind_cols
 from dfply import summarize_each, left_join,spread, unite
 from progressbar import ProgressBar
 
