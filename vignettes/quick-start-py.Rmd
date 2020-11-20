@@ -21,7 +21,7 @@ author:
       University, Taipei, Taiwan
 package: divnn
 abstract: >
-  This vignette explains how to use this package using simulated data. However,
+  This vignette explains how to use this module using simulated data. However,
   reader may need to read another vignette to apply the DeepInsight Visible
   Neural Network (DI-VNN) model.
 output:
@@ -33,19 +33,22 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r Load this package, include=FALSE}
+
+
+```{r Load this and other package, include=FALSE}
+devtools::load_all(".")
 library(divnn)
 ```
 
-```{r Load other packages, include=FALSE}
+```{r}
 library(dplyr)
 library(tidyr)
 library(stringr)
+library(readr)
 library(tibble)
 library(ggplot2)
 library(BiocGenerics)
 library(Biobase)
-library(igraph)
 library(pbapply)
 library(matrixStats)
 Sys.setenv('CUDA_VISIBLE_DEVICES'=-1)
@@ -61,10 +64,9 @@ Load simulated data using this code.
 input=input_example()
 ```
 
-Instance-feature value, a data frame with rows for instances
-and columns for features. All rows in \code{value} should have names. All
-values should be numerics.
-
+The first input is a instance-feature value pandas data frame with rows for
+instances and columns for features. All rows in value should have names. All
+values should be floating numbers.
 
 ```{r echo=FALSE}
 input$value %>%
@@ -89,16 +91,16 @@ input$value %>%
   kableExtra::kable_styling(full_width=T)
 ```
 
-Outcome, a vector of binary integers with the same length as
-the instances. The length and the order of \code{outcome} should be the same
-with those of \code{value}. Value  of 0 and 1 should refer to non-event and
-event outcome, respectively.
+The second input is and outcome binary integers as a single-column pandas data
+frame with the same rows as the instances. The row numbers, the names, and the
+order of outcome should be the same with those of value. Value  of 0 and 1
+should refer to non-event and event outcome, respectively.
 
 ```{r Outcome vector, echo=FALSE}
 input$outcome[1:10]
 ```
 
-Feature similarity, a square matrix of numerics containing
+The third input is a similarity pandas data frame of floating numbers containing
 feature-feature similarity measures.
 
 ```{r echo=FALSE}
@@ -107,9 +109,9 @@ input$similarity %>%
   kableExtra::kable_styling(full_width=T)
 ```
 
-Feature three-dimensional mapping, a matrix of integers with
-rows for features and three columns for three dimensions where the features
-are mapped onto.
+The fourth input is a feature three-dimensional pandas data frame of floating
+numbers with rows for features and three columns for three dimensions where the
+features are mapped onto.
 
 ```{r echo=FALSE}
 input$mapping %>%
@@ -119,12 +121,12 @@ input$mapping %>%
   kableExtra::kable_styling(full_width=T)
 ```
 
-Ontology, a data frame with rows for ontologies and four
-columns for source, target, similarity, and relation. Feature (source)-
+The fifth input is an ontology pandas data frame with rows for ontologies and
+four columns for source, target, similarity, and relation. Feature (source)-
 ontology (target) relation should be annotated as 'feature', while ontology-
 ontology relation should be annotated as 'is_a'. To differentiate between
 feature and ontology names, a prefix of 'ONT:' precedes an ontology name. All
-columns except similarity in \code{ontology} should be characters. Similarity
+columns except similarity in ontology should be characters. Similarity
 (a numeric) is a minimum threshold by which either features or ontologies
 (source) belong to an ontology (target).
 
@@ -134,8 +136,9 @@ input$ontology %>%
   kableExtra::kable_styling(full_width=T)
 ```
 
-In addition, a result of hierarchical clustering is also included for
-visualization purpose.
+In addition, a result of hierarchical clustering is also shown below for
+visualization to get intuition how the features are grouped and how the
+connection constructs the VNN model architecture.
 
 ```{r figure-1, echo=FALSE, fig.cap='Ontology by hierarchical clustering'}
 plot(input$hierarchy)
@@ -146,20 +149,19 @@ plot(input$hierarchy)
 Create a TidySet using this code.
 
 ```{r Create a TidySet, eval=FALSE, echo=TRUE}
-tidy_set=
-  create_tidy_set(
-    value=input$value
-    ,outcome=input$outcome
-    ,similarity=input$similarity
-    ,mapping=input$mapping
-    ,ontology=input$ontology
+tidy_set=create_tidy_set(
+    value=input['value']
+    ,outcome=input['outcome']
+    ,similarity=input['similarity']
+    ,mapping=input['mapping']
+    ,ontology=input['ontology']
   )
 ```
 ```{r include=FALSE}
-tidy_set=readRDS('../env/tidy_set.rds')
+tidy_set=read_ts_tar_gz(path='quick-start/tidy_set_py.ts.tar.gz')
 ```
 
-TidySet, an ExpressionSet with three tables. Instance-feature
+TidySet is an ExpressionSet with three tables. Instance-feature
 value data frame and outcome vector are compiled as a phenotype data frame
 with rows for instances and columns for features and outcome.
 
@@ -188,20 +190,55 @@ list(
   kableExtra::kable_styling(full_width=T)
 ```
 
+Recall experiment notes such similarity, ontomap, ontotype, and ontology using
+this code.
+
+```{r Recall experiment notes, eval=FALSE, echo=TRUE}
+# Recall a similarity matrix
+notes(tidy_set)$similarity
+
+# Recall an ontomap four-dimensional array
+notes(tidy_set)$ontomap
+
+# Recall an ontotype list of two-dimensional matrices
+notes(tidy_set)$ontotype
+
+# Recall an ontology data frame
+notes(tidy_set)$ontology
+```
+
+# Save or load a TidySet
+
+Use this code to save a TidySet by writing a .ts.tar.gz file containing
+exprs.csv, pData.csv, fData.csv, similarity.csv, ontology.csv, and others.txt.
+
+```{r Save a TidySet, eval=FALSE, echo=TRUE}
+write_ts_tar_gz(tidy_set,'quick-start/tidy_set_R')
+```
+
+Function of read_ts_tar_gz can read this file back to a TidySet. Use
+this code to load a TidySet by reading a .ts.tar.gz file.
+
+```{r Load a TidySet, eval=FALSE, echo=TRUE}
+tidy_set=read_ts_tar_gz('quick-start/tidy_set_R.ts.tar.gz')
+```
+
+
 # Create ontonet
 
 Let's create a function that generate a Keras Convolutional Neural Network (CNN)
 model with a specific layer architecture for each path in the hierarchy of the
-given ontology.
+given ontology. The model architecture can be saved to JSON for later use by
+specifying the file path; otherwise (by let it NULL), no JSON will be created.
 
 ```{r Create ontonet generator function, eval=FALSE, echo=TRUE}
 ontonet=
   tidy_set %>%
-  ontonet_generator()
+  ontonet_generator(path='quick-start/ontonet_R')
 ```
 ```{r include=FALSE}
 ontonet=
-  readLines('../env/ontonet.json') %>%
+  readLines('quick-start/ontonet_R.json') %>%
   model_from_json()
 ```
 
@@ -314,8 +351,8 @@ history=
   )
 ```
 ```{r include=FALSE}
-history=readRDS('../env/history.rds')
-load_model_weights_hdf5(ontonet,'../env/ontonet.h5')
+history=readRDS('quick-start/history_R.rds')
+load_model_weights_hdf5(ontonet,'quick-start/ontonet_R.h5')
 ```
 
 Here below is the training result. We can estimate the iteration of which the
@@ -359,7 +396,7 @@ evaluation=
   })
 ```
 ```{r include=FALSE}
-evaluation=readRDS('../env/evaluation.rds')
+evaluation=readRDS('quick-start/evaluation_R.rds')
 ```
 
 The point and interval (95% CI) estimates of accuracy can be computed by
@@ -400,4 +437,3 @@ results %>%
 ```{r Session info}
 sessionInfo()
 ```
-

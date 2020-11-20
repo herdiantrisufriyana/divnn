@@ -34,7 +34,6 @@ vignette: >
 ---
 
 ```{r Load this package, include=FALSE}
-devtools::load_all(".")
 library(divnn)
 ```
 
@@ -157,7 +156,7 @@ tidy_set=
   )
 ```
 ```{r include=FALSE}
-tidy_set=read_ts_tar_gz('quick-start/tidy_set_R.ts.tar.gz')
+tidy_set=read_ts_tar_gz('quick-start-R/tidy_set_R.ts.tar.gz')
 ```
 
 TidySet is an ExpressionSet with three tables. Instance-feature
@@ -212,14 +211,14 @@ Use this code to save a TidySet by writing a .ts.tar.gz file containing
 exprs.csv, pData.csv, fData.csv, similarity.csv, ontology.csv, and others.txt.
 
 ```{r Save a TidySet, eval=FALSE, echo=TRUE}
-write_ts_tar_gz(tidy_set,'quick-start/tidy_set_R')
+write_ts_tar_gz(tidy_set,'quick-start-R/tidy_set_R')
 ```
 
 Function of read_ts_tar_gz can read this file back to a TidySet. Use
 this code to load a TidySet by reading a .ts.tar.gz file.
 
 ```{r Load a TidySet, eval=FALSE, echo=TRUE}
-tidy_set=read_ts_tar_gz('quick-start/tidy_set_R.ts.tar.gz')
+tidy_set=read_ts_tar_gz('quick-start-R/tidy_set_R.ts.tar.gz')
 ```
 
 
@@ -233,11 +232,11 @@ specifying the file path; otherwise (by let it NULL), no JSON will be created.
 ```{r Create ontonet generator function, eval=FALSE, echo=TRUE}
 ontonet=
   tidy_set %>%
-  ontonet_generator(path='quick-start/ontonet_R')
+  ontonet_generator(path='quick-start-R/ontonet_R')
 ```
 ```{r include=FALSE}
 ontonet=
-  readLines('quick-start/ontonet_R.json') %>%
+  readLines('quick-start-R/ontonet_R.json') %>%
   model_from_json()
 ```
 
@@ -350,8 +349,8 @@ history=
   )
 ```
 ```{r include=FALSE}
-history=readRDS('quick-start/history_R.rds')
-load_model_weights_hdf5(ontonet,'quick-start/ontonet_R.h5')
+history=readRDS('quick-start-R/history_R.rds')
+load_model_weights_hdf5(ontonet,'quick-start-R/ontonet_R.h5')
 ```
 
 Here below is the training result. We can estimate the iteration of which the
@@ -395,7 +394,7 @@ evaluation=
   })
 ```
 ```{r include=FALSE}
-evaluation=readRDS('quick-start/evaluation_R.rds')
+evaluation=readRDS('quick-start-R/evaluation_R.rds')
 ```
 
 The point and interval (95% CI) estimates of accuracy can be computed by
