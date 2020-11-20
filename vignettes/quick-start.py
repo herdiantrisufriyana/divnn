@@ -1,5 +1,5 @@
 # Import modules and set GPU off
-from divnn import utils, tidyset, generator
+from divnn import utils, TidySet, generator
 import os
 import pickle
 import pandas as pd

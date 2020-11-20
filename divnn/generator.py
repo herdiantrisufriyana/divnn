@@ -5,7 +5,7 @@ from tensorflow import keras
 from tensorflow.keras import layers, activations
 from progressbar import ProgressBar
 
-def ontonet(tidy_set,path=None,init_seed=888,init2_seed=9999):
+def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
   
   """
   Make an ontonet generator for visible neural network (VNN) modeling
@@ -14,7 +14,7 @@ def ontonet(tidy_set,path=None,init_seed=888,init2_seed=9999):
   Network (CNN) model with a specific layer architecture for each path in the
   hierarchy of the given ontology.
   
-  :param tidy_set: TidySet, an ExpressionSet with three tables.
+  :param TidySet: TidySet, an ExpressionSet with three tables.
   :param path: A character of file path if the model json file is saved.
   :param init_seed: An integer of random seed for ReLU initializer.
   :param init2_seed: An integer of random seed for tanh initializer.
@@ -23,13 +23,13 @@ def ontonet(tidy_set,path=None,init_seed=888,init2_seed=9999):
   """
   
   # Recall ontomap
-  ontomap=notes(tidy_set.experimentData)['ontomap']
+  ontomap=notes(TidySet.experimentData)['ontomap']
   
   # Recall ontotype
-  ontotype=notes(tidy_set.experimentData)['ontotype']
+  ontotype=notes(TidySet.experimentData)['ontotype']
   
   # Recall ontology
-  ontology=notes(tidy_set.experimentData)['ontology']
+  ontology=notes(TidySet.experimentData)['ontology']
   
   # Build a function to insert an inception module along with a pre-activation residual unit
   def layer_inception_resnet(object
@@ -540,7 +540,7 @@ def ontonet(tidy_set,path=None,init_seed=888,init2_seed=9999):
   return model
 
 
-def ontoarray(tidy_set,index,batch_size):
+def ontoarray(TidySet,index,batch_size):
   
   """
   Make an ontoarray generator for visible neural network (VNN) modeling
@@ -550,7 +550,7 @@ def ontoarray(tidy_set,index,batch_size):
   fit_generator, evaluate_generator, or predict_generator function from Keras R
   package.
   
-  :param tidy_set: TidySet, an ExpressionSet with three tables.
+  :param TidySet: TidySet, an ExpressionSet with three tables.
   :param index: An integer vector of index to select which ontoarray will be
   used for training or testing.
   :param batch_size: An integer of how much samples are generated everytime
@@ -562,13 +562,13 @@ def ontoarray(tidy_set,index,batch_size):
   """
   
   # Recall ontomap
-  ontomap=notes(tidy_set.experimentData)['ontomap']
+  ontomap=notes(TidySet.experimentData)['ontomap']
   
   # Recall ontotype
-  ontotype=notes(tidy_set.experimentData)['ontotype']
+  ontotype=notes(TidySet.experimentData)['ontotype']
   
   # Recall outcome
-  outcome=pData(tidy_set).outcome
+  outcome=pData(TidySet).outcome
   
   # Build a generator function to load a batch of ontoarray
   ontomap=ontomap[index]

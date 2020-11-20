@@ -349,7 +349,7 @@ def compile(value
   return output
 
 
-def write(tidy_set,path):
+def write(TidySet,path):
   
   """
   Write a .ts.tar.gz file from a TidySet
@@ -357,7 +357,7 @@ def write(tidy_set,path):
   This function write multiple files archived by tar with gzip compression
   from a TidySet.
   
-  :param tidy_set: TidySet, an ExpressionSet with three tables.
+  :param TidySet: TidySet, an ExpressionSet with three tables.
   :param path: A character of .ts.tar.gz file path (do not include file
   extension).
   :return: output A .ts.tar.gz file containing exprs.csv, pData.csv,
@@ -368,31 +368,31 @@ def write(tidy_set,path):
   os.mkdir(path)
   os.chdir(path)
   
-  pd.DataFrame(exprs(tidy_set)).to_csv(
+  pd.DataFrame(exprs(TidySet)).to_csv(
     'exprs.csv'
     ,header=False
     ,index=False
   )
   
-  pd.DataFrame(pData(tidy_set)).to_csv(
+  pd.DataFrame(pData(TidySet)).to_csv(
     'pData.csv'
     ,header=False
     ,index=False
   )
   
-  pd.DataFrame(fData(tidy_set)).to_csv(
+  pd.DataFrame(fData(TidySet)).to_csv(
     'fData.csv'
     ,header=False
     ,index=False
   )
   
-  pd.DataFrame(notes(tidy_set.experimentData)['similarity']).to_csv(
+  pd.DataFrame(notes(TidySet.experimentData)['similarity']).to_csv(
     'similarity.csv'
     ,header=False
     ,index=False
   )
   
-  pd.DataFrame(notes(tidy_set.experimentData)['ontology']).to_csv(
+  pd.DataFrame(notes(TidySet.experimentData)['ontology']).to_csv(
     'ontology.csv'
     ,header=False
     ,index=False
@@ -409,13 +409,13 @@ def write(tidy_set,path):
   
   with open('others.txt','a') as f:
     print('>>sampleNames',file=f)
-    write(colnames(tidy_set),ncolumns=1000,file=f)
+    write(colnames(TidySet),ncolumns=1000,file=f)
     
     print('>>varLabels',file=f)
-    write(varLabels(tidy_set.phenoData),ncolumns=1000,file=f)
+    write(varLabels(TidySet.phenoData),ncolumns=1000,file=f)
     
     print('>>varMetadata',file=f)
-    string=varMetadata(tidy_set.phenoData).labelDescription.values.tolist()
+    string=varMetadata(TidySet.phenoData).labelDescription.values.tolist()
     i=0
     for c in string:
       if np.isnan(string[i]): string[i]='NA'
@@ -424,7 +424,7 @@ def write(tidy_set,path):
     
     print('>>varClass',file=f)
     string=[]
-    for i in pData(tidy_set).dtypes.values.tolist():
+    for i in pData(TidySet).dtypes.values.tolist():
       if 'float' in str(i):
         string.append('numeric')
       elif 'int' in str(i):
@@ -436,13 +436,13 @@ def write(tidy_set,path):
     write(string,ncolumns=1000,file=f)
     
     print('>>featureNames',file=f)
-    write(rownames(tidy_set),ncolumns=1000,file=f)
+    write(rownames(TidySet),ncolumns=1000,file=f)
     
     print('>>fvarLabels',file=f)
-    write(varLabels(tidy_set.featureData),ncolumns=1000,file=f)
+    write(varLabels(TidySet.featureData),ncolumns=1000,file=f)
     
     print('>>fvarMetadata',file=f)
-    string=varMetadata(tidy_set.featureData).labelDescription.values.tolist()
+    string=varMetadata(TidySet.featureData).labelDescription.values.tolist()
     i=0
     for c in string:
       if np.isnan(string[i]): string[i]='NA'
@@ -451,7 +451,7 @@ def write(tidy_set,path):
     
     print('>>fvarClass',file=f)
     string=[]
-    for i in fData(tidy_set).dtypes.values.tolist():
+    for i in fData(TidySet).dtypes.values.tolist():
       if 'float' in str(i):
         string.append('numeric')
       elif 'int' in str(i):
@@ -463,16 +463,16 @@ def write(tidy_set,path):
     write(string,ncolumns=1000,file=f)
     
     print('>>simNames',file=f)
-    string=notes(tidy_set.experimentData)['similarity'].index.values.tolist()
+    string=notes(TidySet.experimentData)['similarity'].index.values.tolist()
     write(string,ncolumns=1000,file=f)
     
     print('>>ontoNames',file=f)
-    string=notes(tidy_set.experimentData)['ontology'].columns.values.tolist()
+    string=notes(TidySet.experimentData)['ontology'].columns.values.tolist()
     write(string,ncolumns=1000,file=f)
     
     print('>>ontoClass',file=f)
     string=[]
-    for i in notes(tidy_set.experimentData)['ontology'].dtypes.values.tolist():
+    for i in notes(TidySet.experimentData)['ontology'].dtypes.values.tolist():
       if 'float' in str(i):
         string.append('numeric')
       elif 'int' in str(i):
@@ -485,16 +485,16 @@ def write(tidy_set,path):
     
     for i in ['name','lab','contact','title','abstract','url','pubMedIds']:
       print('>>'+i,file=f)
-      if i=='name': print(tidy_set.experimentData.name,file=f)
-      elif i=='lab': print(tidy_set.experimentData.lab,file=f)
-      elif i=='contact': print(tidy_set.experimentData.contact,file=f)
-      elif i=='title': print(tidy_set.experimentData.title,file=f)
-      elif i=='abstract': print(tidy_set.experimentData.abstract,file=f)
-      elif i=='url': print(tidy_set.experimentData.url,file=f)
-      elif i=='pubMedIds': print(tidy_set.experimentData.pubMedIds,file=f)
+      if i=='name': print(TidySet.experimentData.name,file=f)
+      elif i=='lab': print(TidySet.experimentData.lab,file=f)
+      elif i=='contact': print(TidySet.experimentData.contact,file=f)
+      elif i=='title': print(TidySet.experimentData.title,file=f)
+      elif i=='abstract': print(TidySet.experimentData.abstract,file=f)
+      elif i=='url': print(TidySet.experimentData.url,file=f)
+      elif i=='pubMedIds': print(TidySet.experimentData.pubMedIds,file=f)
     
     print('>>annotation',file=f)
-    print(annotation(tidy_set),file=f,end='')
+    print(annotation(TidySet),file=f,end='')
   
   path2=re.split('/',path)
   path2=path2[len(path2)-1]
@@ -678,7 +678,7 @@ def read(path):
   fdata.index.name=None
   fdata=AnnotatedDataFrame(fdata,fmetadata)
   
-  notes(tidy_set.experimentData)['ontology']
+  notes(TidySet.experimentData)['ontology']
   
   ontology_names=re.split('\\s',others['ontoNames'])
   ontology_dtype=re.split('\\s',others['ontoClass'])
