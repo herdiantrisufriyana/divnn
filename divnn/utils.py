@@ -1,12 +1,11 @@
 import pandas as pd
 import numpy as np
-import scipy as sp
-from dfply import *
+from scipy.stats import pearsonr
 from sklearn.cluster import KMeans, AgglomerativeClustering
 from sklearn.decomposition import PCA
 from scipy.cluster.hierarchy import dendrogram
 
-def input_example():
+def example():
   
   """
   Make an input example for divnn package
@@ -52,7 +51,7 @@ def input_example():
     sim_mat=np.empty((X.shape[1],X.shape[1]))
     for i in range(X.shape[1]):
       for j in range(X.shape[1]):
-        sim_mat[i,j]=sp.stats.pearsonr(X.to_numpy()[i,:],X.to_numpy()[j,:])[0]
+        sim_mat[i,j]=pearsonr(X.to_numpy()[i,:],X.to_numpy()[j,:])[0]
     return sim_mat
   input['similarity']=cor(input['value'])
   input['similarity']=pd.DataFrame(
