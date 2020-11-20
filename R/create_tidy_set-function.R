@@ -30,10 +30,11 @@
 #' feature value data frame and feature three-dimensional mapping matrix are
 #' compiled as an expression matrix with rows for positions of features and
 #' columns for instances. The mapping and similarity matrices and ontology data
-#' frame are compile as a feature data frame with rows for positions of features
-#' and columns for feature names and ontological relations. For easier access,
-#' the original ontology data frame is included in experiment information at
-#' section 'notes' as a list.
+#' frame are compiled as a feature data frame with rows for positions of
+#' features and columns for feature names and ontological relations. For easier,
+#' access the similarity matrix, ontomap four-dimensional array, ontotype list
+#' of two-dimensional matrices, and ontology data frame are included in
+#' experiment notes that can be called using Biobase function \code{notes}.
 #'
 #' @keywords TidySet, ExpressionSet
 #'
@@ -66,11 +67,17 @@
 #' ## The expression data frame
 #' exprs(tidy_set)
 #'
-#' ## The original ontology data frame
-#' tidy_set %>%
-#'   experimentData() %>%
-#'   notes() %>%
-#'   .$ontology
+#' ## Recall a similarity matrix
+#' notes(tidy_set)$similarity
+#'
+#' ## Recall an ontomap four-dimensional array
+#' notes(tidy_set)$ontomap
+#'
+#' ## Recall an ontotype list of two-dimensional matrices
+#' notes(tidy_set)$ontotype
+#'
+#' ## Recall an ontology data frame
+#' notes(tidy_set)$ontology
 
 create_tidy_set=function(value
                          ,outcome
@@ -82,7 +89,7 @@ create_tidy_set=function(value
                          ,decreasing=F
                          ,seed_num=33){
 
-  pb=startpb(0,4)
+  pb=startpb(0,7)
   on.exit(closepb(pb))
   setpb(pb,0)
 
@@ -94,7 +101,7 @@ create_tidy_set=function(value
     M
   }
 
-  create_fmap=function(mapping,similarity,angle,ranked=T,dims=7){
+  create_fmap=function(mapping,similarity,angle,ranked=ranked,dims=dims){
     data=
       data.frame(
         feature=rownames(similarity)
@@ -232,7 +239,7 @@ create_tidy_set=function(value
     value %>%
     .[,rownames(fmap)] %>%
     as.data.frame() %>%
-    mutate(outcome=outcome) %>%
+    mutate(outcome=as.integer(outcome)) %>%
     select(outcome,everything()) %>%
     `rownames<-`(colnames(adata))
 
@@ -251,16 +258,95 @@ create_tidy_set=function(value
     ) %>%
     column_to_rownames(var='pos_id')
 
+  setpb(pb,4)
+  ontomap=
+    adata %>%
+    t() %>%
+    array(
+      dim=
+        c(dim(.)[1]
+          ,colnames(.) %>%
+            lapply(str_split_fixed,'x|y|z',4) %>%
+            sapply(as.integer) %>%
+            t() %>%
+            .[,2:4] %>%
+            colMaxs()
+        )
+      ,dimnames=list(rownames(.),NULL,NULL,NULL)
+    )
+
+  setpb(pb,5)
+  ontotype=
+    fdata %>%
+    lapply(X=seq(ncol(.)-1),Y=.,function(X,Y){
+      Z=Y %>%
+        select(-feature) %>%
+        .[,X,drop=F] %>%
+        rownames_to_column(var='pos_id') %>%
+        setNames(c('pos_id','ontotype')) %>%
+        filter(ontotype==1) %>%
+        left_join(
+          rownames_to_column(Y,var='pos_id') %>%
+            select(pos_id,feature),by='pos_id'
+        )
+
+      K=Z %>%
+        pull(pos_id) %>%
+        str_split_fixed('x|y|z',4) %>%
+        .[,2:4]
+
+      matrix(
+        as.integer(K)
+        ,ncol=3
+        ,byrow=F
+        ,dimnames=list(Z$feature,c('x','y','z'))
+      )
+    }) %>%
+    setNames(fdata %>% colnames(.) %>% .[.!='feature']) %>%
+    c(list(
+      root=
+        fdata  %>%
+        rownames_to_column(var='pos_id') %>%
+        select(pos_id,feature) %>%
+        filter(!is.na(feature)) %>%
+        lapply(X=1,Y=.,function(X,Y){
+          Z=Y %>%
+            pull(pos_id) %>%
+            str_split_fixed('x|y|z',4) %>%
+            .[,2:4]
+          matrix(
+            as.integer(Z)
+            ,ncol=3
+            ,byrow=F
+            ,dimnames=list(Y$feature,c('x','y','z'))
+          )
+        }) %>%
+        .[[1]]
+    ))
+
+  setpb(pb,6)
   output=
     ExpressionSet(
       assayData=assayData(ExpressionSet(adata))
       ,phenoData=AnnotatedDataFrame(pdata)
       ,featureData=AnnotatedDataFrame(fdata)
-      ,experimentData=MIAME(other=list(ontology=ori_ontology))
+      ,experimentData=
+        MIAME(
+          other=
+            list(
+              similarity=
+                similarity %>%
+                .[match(rownames(fmap),rownames(.))
+                  ,match(rownames(fmap),rownames(.))]
+              ,ontomap=ontomap
+              ,ontotype=ontotype
+              ,ontology=ori_ontology
+            )
+        )
     )
 
   gc()
-  setpb(pb,4)
+  setpb(pb,7)
   output
 
 }

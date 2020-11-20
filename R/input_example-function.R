@@ -6,7 +6,7 @@
 #' instances and columns for features; 2) outcome, a vector of binary integers
 #' with the same length as the instances; 3) similarity, a square matrix of
 #' numerics containing feature-feature similarity measures; 4) mapping, a matrix
-#' of integers with rows for features and three columns for three dimensions
+#' of numerics with rows for features and three columns for three dimensions
 #' where the features are mapped onto; and 5) ontology, a data frame with rows
 #' for ontologies and four columns for source, target, similarity, and relation.
 #' In addition, a result of hierarchical clustering is also included for
@@ -40,7 +40,9 @@ input_example=function(){
   ## Create example of outcome vector
   ## This example uses k-means to create a classifiable outcome
   input$outcome=
-    kmeans(input$value,centers=2,algorithm='Hartigan-Wong')$cluster-1
+   kmeans(input$value,centers=2,algorithm='Hartigan-Wong')$cluster-1
+
+  input$outcome=setNames(as.integer(input$outcome),names(input$outcome))
 
   ## Create example of feature similarity matrix using Pearson correlation
   input$similarity=

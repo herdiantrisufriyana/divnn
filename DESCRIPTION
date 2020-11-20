@@ -34,6 +34,7 @@ Imports:
     dplyr,
     tidyr,
     stringr,
+    readr,
     tibble,
     ggplot2,
     BiocGenerics,

@@ -1,4 +1,4 @@
-# Load packages
+# Load packages and set GPU off
 library(divnn)
 library(dplyr)
 library(tidyr)
@@ -26,6 +26,24 @@ tidy_set=
     ,mapping=input$mapping
     ,ontology=input$ontology
   )
+
+# Recall a similarity matrix
+notes(tidy_set)$similarity
+
+# Recall an ontomap four-dimensional array
+notes(tidy_set)$ontomap
+
+# Recall an ontotype list of two-dimensional matrices
+notes(tidy_set)$ontotype
+
+# Recall an ontology data frame
+notes(tidy_set)$ontology
+
+# Save a TidySet
+write_ts_tar_gz(tidy_set,'quick-start/tidy_set')
+
+# Load a TidySet
+tidy_set=read_ts_tar_gz('quick-start/tidy_set.ts.tar.gz')
 
 # Create ontonet
 ontonet=

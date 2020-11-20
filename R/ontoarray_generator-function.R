@@ -73,63 +73,21 @@
 
 ontoarray_generator=function(tidy_set,index,batch_size) {
 
-  # Create an ontomap
+  # Recall ontomap
   ontomap=
     tidy_set %>%
-    exprs() %>%
-    t() %>%
-    array(
-      dim=
-        c(dim(.)[1]
-          ,colnames(.) %>%
-            lapply(str_split_fixed,'x|y|z',4) %>%
-            sapply(as.integer) %>%
-            t() %>%
-            .[,2:4] %>%
-            colMaxs()
-        )
-      ,dimnames=list(rownames(.),NULL,NULL,NULL)
-    )
+    experimentData() %>%
+    notes() %>%
+    .$ontomap
 
-  # Create an ontotype
+  # Recall ontotype
   ontotype=
     tidy_set %>%
-    fData() %>%
-    lapply(X=seq(ncol(.)-1),Y=.,function(X,Y){
-      Z=Y %>%
-        select(-feature) %>%
-        .[,X,drop=F] %>%
-        rownames_to_column(var='pos_id') %>%
-        setNames(c('pos_id','ontotype')) %>%
-        filter(ontotype==1) %>%
-        left_join(rownames_to_column(Y,var='pos_id') %>% select(pos_id,feature),by='pos_id')
+    experimentData() %>%
+    notes() %>%
+    .$ontotype
 
-      K=Z %>%
-        pull(pos_id) %>%
-        str_split_fixed('x|y|z',4) %>%
-        .[,2:4]
-
-      matrix(as.integer(K),ncol=3,byrow=F,dimnames=list(Z$feature,c('x','y','z')))
-    }) %>%
-    setNames(tidy_set %>% fData() %>% colnames(.) %>% .[.!='feature']) %>%
-    c(list(
-      root=
-        tidy_set %>%
-        fData()  %>%
-        rownames_to_column(var='pos_id') %>%
-        select(pos_id,feature) %>%
-        filter(!is.na(feature)) %>%
-        lapply(X=1,Y=.,function(X,Y){
-          Z=Y %>%
-            pull(pos_id) %>%
-            str_split_fixed('x|y|z',4) %>%
-            .[,2:4]
-          matrix(as.integer(Z),ncol=3,byrow=F,dimnames=list(Y$feature,c('x','y','z')))
-        }) %>%
-        .[[1]]
-    ))
-
-  # Call outcome
+  # Recall outcome
   outcome=tidy_set$outcome
 
   # Build a generator function to load a batch of ontoarray
