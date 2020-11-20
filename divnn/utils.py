@@ -27,7 +27,7 @@ def example():
   
   ## Set an empty list of inputs and random seed
   input={}
-  np.random.seed(33)
+  np.random.seed(99)
   
   ## Create example of instance-feature data frame
   input['value']=np.random.normal(0,1,3000*5).reshape((3000,5))
@@ -39,7 +39,7 @@ def example():
   
   ## Create example of outcome vector
   ## This example uses k-means to create a classifiable outcome
-  kmeans=KMeans(n_clusters=2,random_state=33,algorithm='elkan')
+  kmeans=KMeans(n_clusters=2,random_state=99,algorithm='full')
   input['outcome']=kmeans.fit(input['value'].to_numpy())
   input['outcome']=input['outcome'].predict(input['value'].to_numpy())
   input['outcome']=pd.DataFrame(
@@ -65,7 +65,7 @@ def example():
   ## Create example of feature three-dimensional mapping matrix
   ## This example uses PCA for simplicity
   ## DeepInsight originally uses t-SNE and kernel PCA
-  input['mapping']=PCA(n_components=3,random_state=33)
+  input['mapping']=PCA(n_components=3,random_state=99)
   input['mapping']=input['mapping'].fit_transform(input['similarity'])
   input['mapping']=pd.DataFrame(
       data=input['mapping']
