@@ -678,8 +678,6 @@ def read(path):
   fdata.index.name=None
   fdata=AnnotatedDataFrame(fdata,fmetadata)
   
-  notes(TidySet.experimentData)['ontology']
-  
   ontology_names=re.split('\\s',others['ontoNames'])
   ontology_dtype=re.split('\\s',others['ontoClass'])
   ontology=dict()
