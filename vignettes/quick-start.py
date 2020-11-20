@@ -1,5 +1,5 @@
 # Import modules and set GPU off
-import divnn
+from divnn import *
 import os
 import pickle
 import pandas as pd
