@@ -4,25 +4,17 @@ import os
 import pickle
 import pandas as pd
 import numpy as np
-import scipy as sp
 import regex as re
-import tensorflow as tf
 import math
-from dfply import *
-from progressbar import ProgressBar
-from sklearn.cluster import KMeans, AgglomerativeClustering
-from sklearn.decomposition import PCA
-from scipy.cluster.hierarchy import dendrogram
 os.environ['CUDA_VISIBLE_DEVICES']='-1'
 from tensorflow import keras
-from tensorflow.keras import layers, activations
 from tensorflow.keras.models import model_from_json
 
 # Create input example
 input=utils.example()
 
 # Compile input to TidySet
-tidy_set=tidyset.compile(
+tidy_set=TidySet.compile(
     value=input['value']
     ,outcome=input['outcome']
     ,similarity=input['similarity']
@@ -30,11 +22,11 @@ tidy_set=tidyset.compile(
     ,ontology=input['ontology']
   )
 
-write_ts_tar_gz(tidy_set,'vignettes/quick-start-py/tidy_set_py')
+TidySet.write(tidy_set,'vignettes/quick-start-py/tidy_set_py')
 
-tidy_set=read_ts_tar_gz('vignettes/quick-start-py/tidy_set_py.ts.tar.gz')
+tidy_set=TidySet.read('vignettes/quick-start-py/tidy_set_py.ts.tar.gz')
 
-ontonet=ontonet_generator(tidy_set,path='vignettes/quick-start-py/ontonet_py')
+ontonet=generator.ontonet(tidy_set,path='vignettes/quick-start-py/ontonet_py')
 
 json_file=open('vignettes/quick-start-py/ontonet_py.json','r')
 ontonet=json_file.read()
@@ -94,13 +86,13 @@ for i in index:
     train_i.append(i)
 
 history=ontonet.fit_generator(
-    generator=ontoarray_generator(
+    generator=generator.ontoarray(
         tidy_set
         ,[index[i] for i in train_i]
         ,batch_size=32
       )
     ,steps_per_epoch=math.ceil(len(train_i)/32)
-    ,validation_data=ontoarray_generator(
+    ,validation_data=generator.ontoarray(
         tidy_set
         ,[index[i] for i in val_i]
         ,batch_size=32
@@ -130,7 +122,7 @@ for i in np.arange(30):
     ,replace=True
   ).tolist()
   evaluation[i]=ontonet.evaluate_generator(
-    generator=ontoarray_generator(
+    generator=generator.ontoarray(
         tidy_set
         ,[index[i] for i in test_i_boot]
         ,batch_size=32
