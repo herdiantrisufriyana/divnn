@@ -79,7 +79,7 @@ def example():
   ## Create example of outcome vector
   ## This example uses k-means to create a classifiable outcome
   numCluster_hartigan=hartigan_K(input['value'].to_numpy())
-  kmeans=hartigan_K(n_clusters=numCluster_hartigan,random_state=33)
+  kmeans=KMeans(n_clusters=numCluster_hartigan,random_state=33)
   input['outcome']=kmeans.fit(input['value'].to_numpy())
   input['outcome']=input['outcome'].predict(input['value'].to_numpy())
   input['outcome']=input['outcome'].astype(int)
