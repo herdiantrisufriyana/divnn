@@ -1,5 +1,7 @@
 # Import modules and set GPU off
-import divnn as dv
+from divnn import input_example, create_tidy_set
+from divnn import write_ts_tar_gz, write_ts_tar_gz
+from divnn import ontonet_generator, ontoarray_generator
 import os
 import pickle
 import pandas as pd
