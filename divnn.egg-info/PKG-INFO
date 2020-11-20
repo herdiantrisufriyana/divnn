@@ -1,12 +1,7 @@
-from setuptools import setup
-
-setup(
-  name='divnn'
-  ,packages=['py']
-  ,version='0.1.1'
-  ,author='Herdiantri Sufriyana'
-  ,author_email='herdiantrisufriyana@unusa.ac.id'
-  ,description="""
+Metadata-Version: 1.0
+Name: divnn
+Version: 0.1.1
+Summary: 
     This module facilitates application of DeepInsight (DI) and Visible Neural
     Network (VNN) algorithms from Alok Sharma and Michael Ku Yu, respectively.
     The application is intended for supervised machine learning by convolutional
@@ -24,17 +19,10 @@ setup(
     target-similarity-relation data frame. All of these inputs are pandas data
     frames. The outputs are tidy (expression) set, training array, and Keras CNN
     model.
-    """
-  ,license='GPL-3'
-  ,install_requires=[
-      'regex'
-      ,'pandas>=1.0.5'
-      ,'numpy>=1.18.5'
-      ,'scipy>=1.5.0'
-      ,'dfply>=0.3.3'
-      ,'progressbar>=2.5'
-      ,'sklearn>=0.0'
-      ,'tensorflow==2.0.0'
-    ]
-  ,URL='https://github.com/herdiantrisufriyana/divnn'
-)
+    
+Home-page: UNKNOWN
+Author: Herdiantri Sufriyana
+Author-email: herdiantrisufriyana@unusa.ac.id
+License: GPL-3
+Description: UNKNOWN
+Platform: UNKNOWN
