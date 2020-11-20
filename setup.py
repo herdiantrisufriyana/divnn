@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
   name='divnn'
-  ,packages=['py']
+  ,packages=['divnn']
   ,version='0.1.1'
   ,author='Herdiantri Sufriyana'
   ,author_email='herdiantrisufriyana@unusa.ac.id'
