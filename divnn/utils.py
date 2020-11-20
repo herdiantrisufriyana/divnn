@@ -7,45 +7,6 @@ from sklearn.decomposition import PCA
 from scipy.cluster.hierarchy import dendrogram
 
 
-def hartigan_K(list_of_tuples, threshold = 12):
-  # Original hartigan_k function by Teddy Roland
-  # https://github.com/teddyroland/python-hartigan/
-  
-  # 'list_of_tuples' is a list containing the points you want to cluster
-  # 'threshold' optimizes goodness of fit values
-  # Hartigan recommends setting threshold to 10, but Chiang & Mirkin confirm
-  # up to 12 returns integer, "correct" number of clusters
-  
-  # initializes for maximum possible clusters
-  inertia_list = np.zeros(len(list_of_tuples)+1)
-  # counter
-  num = 0
-  # simply initializes above threshold to meet 'while' condition
-  H_Rule = threshold+1
-  
-  # NOTE:
-  # 'inertia' is equivalent to the sum of within-cluster distances to centroids
-  while num < len(list_of_tuples) and H_Rule > threshold:
-    kmn = KMeans(n_clusters = num+1, random_state = 33)
-    kmn.fit(list_of_tuples)
-    inertia_list[num+1]+=kmn.inertia_
-    if num > 0:
-      a = ((float(inertia_list[num])/inertia_list[num+1])-1)
-      b = (len(list_of_tuples)-(num)-1)
-      H_Rule = a*b
-    num+=1
-  
-  if H_Rule > threshold:
-    num+=1
-  # NOTE:
-  # if while-loop reaches the number of K-Means clusters equal to the length of
-  # list_of_tuples without hitting the threshold, then function returns trivial
-  # solution that there are N clusters (where N is the number of points under
-  # observation)
-  
-  return num-1
-
-
 def example():
   
   """
@@ -78,18 +39,11 @@ def example():
   
   ## Create example of outcome vector
   ## This example uses k-means to create a classifiable outcome
-  numCluster_hartigan=hartigan_K(input['value'].to_numpy())
-  kmeans=KMeans(n_clusters=numCluster_hartigan,random_state=33)
+  kmeans=KMeans(n_clusters=2,random_state=33,algorithm='elkan')
   input['outcome']=kmeans.fit(input['value'].to_numpy())
   input['outcome']=input['outcome'].predict(input['value'].to_numpy())
-  input['outcome']=input['outcome'].astype(int)
-  for i in np.arange(len(input['outcome'])):
-    if input['outcome'][i]==set(input['outcome'])[0]:
-      input['outcome'][i]=1
-    else:
-      input['outcome'][i]=0
   input['outcome']=pd.DataFrame(
-      data=input['outcome']
+      data=input['outcome'].astype(int)
       ,index=input['value'].index.values.tolist()
       ,columns=['outcome']
     )
