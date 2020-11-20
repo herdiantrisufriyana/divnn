@@ -1,5 +1,5 @@
-import pandas as pd
-import numpy as np
+from divnn.AnnotatedDataFrame import *
+from divnn.MIAME import *
 
 class ExpressionSet(object):
   
@@ -143,3 +143,130 @@ class ExpressionSet(object):
     print('experimentData: use ".experimentData.desc()"')
     print('Annotation:',end=' ')
     print(self.annotation)
+
+
+def exprs(ExpressionSet):
+  """
+  Retrieve expression data from eSets
+  
+  These generic functions access the expression of assay data stored in an
+  object derived from the eSet-class.
+  
+  :param ExpressionSet: An ExpressionSet object.
+  :return: A two-dimensional numpy array matrix (usually large!) of expression
+  values
+  """
+  
+  return ExpressionSet.assayData
+
+
+def pData(ExpressionSet):
+  """
+  Retrieve information on experimental phenotypes recorded in eSet and
+  ExpressionSet-derived classes
+  
+  These generic functions access the phenotypic data (e.g., covariates)
+  associated with an experiment. This method and the documentation are adapted
+  from the original method in Bioconductor by Biocore team.
+  
+  :param ExpressionSet: An ExpressionSet object.
+  :return: A pandas data frame with samples as rows, variables as columns.
+  """
+  
+  return ExpressionSet.phenoData.data
+
+
+def fData(ExpressionSet):
+  """
+  Retrieve information on features recorded in eSet-derived classes
+  
+  These generic functions access feature data (experiment specific information
+  about features). This method and the documentation are adapted from the
+  original method in Bioconductor by Biocore team.
+  
+  :param ExpressionSet: An ExpressionSet object.
+  :return: A pandas data frame with features as rows, variables as columns.
+  """
+  
+  return ExpressionSet.featureData.data
+
+
+def experimentData(ExpressionSet):
+  """
+  Retrieve Meta-data from eSets and ExpressionSets
+  
+  These generic functions access generic data, abstracts, PubMed IDs and
+  experiment data from instances of the eSet-class or ExpressionSet-class. This
+  method and the documentation are adapted from the original method in
+  Bioconductor by Biocore team.
+  
+  :param ExpressionSet: An ExpressionSet object.
+  :return: A MIAME object representing the description of an experiment.
+  """
+  
+  return ExpressionSet.experimentData
+
+
+def annotation(ExpressionSet):
+  """
+  Accessing annotation information
+  
+  Get or set the annotation information contained in an object. This method and
+  the documentation are adapted from the original method in BiocGenerics by
+  BiocGenerics team.
+  
+  :param ExpressionSet: An ExpressionSet object.
+  :return: A string.
+  """
+  
+  return ExpressionSet.annotation
+
+
+def protocolData(ExpressionSet):
+  """
+  Protocol Metadata
+  
+  This generic function handles methods for adding and retrieving protocol
+  metadata for the samples in eSets. This method and the documentation are
+  adapted from the original method in Bioconductor by Biocore team.
+  
+  :param ExpressionSet: An ExpressionSet object.
+  :return: An AnnotatedDataFrame containing the protocol metadata for the
+  samples.
+  """
+  
+  return ExpressionSet.protocolData.data
+
+
+def rownames(ExpressionSet):
+  """
+  Row names
+  
+  Get the row names of an ExpressionSet.
+  
+  NOTE: This man page is for the rownames S4 generic functions defined in the
+  BiocGenerics package. This method and the documentation are adapted from the
+  original method in Bioconductor by BiocGenerics team.
+  
+  :param ExpressionSet: An ExpressionSet object.
+  :return: A list containing strings of row names.
+  """
+  
+  return ExpressionSet.featureData.data.index.values.tolist()
+
+
+def colnames(ExpressionSet):
+  """
+  Column names
+  
+  Get the column names of an ExpressionSet.
+  
+  NOTE: This man page is for the colnames S4 generic functions defined in the
+  BiocGenerics package. This method and the documentation are adapted from the
+  original method in Bioconductor by BiocGenerics team.
+  
+  :param ExpressionSet: An ExpressionSet object.
+  :return: A list containing strings of column names.
+  """
+  
+  return ExpressionSet.phenoData.data.index.values.tolist()

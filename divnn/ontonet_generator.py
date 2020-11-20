@@ -1,9 +1,10 @@
-import numpy as np
-import tensorflow as tf
 import math
+import tensorflow as tf
+from divnn.ExpressionSet import *
 from dfply import *
 from tensorflow import keras
 from tensorflow.keras import layers, activations
+from progressbar import ProgressBar
 
 def ontonet_generator(tidy_set
                       ,path=None
@@ -431,6 +432,10 @@ def ontonet_generator(tidy_set
   
   non_terminal_nodes=hierarchy['to'].drop_duplicates().to_list()
   
+  pb=ProgressBar(3+len(terminal_nodes)+len(non_terminal_nodes))
+  tick=0
+  pb.start()
+  
   inputs=dict()
   for i in ontotype.keys():
     inputs[i]=keras.Input(
@@ -443,6 +448,9 @@ def ontonet_generator(tidy_set
   outputs=dict()
   
   for i in np.arange(len(terminal_nodes)):
+    tick+=1
+    pb.update(tick)
+    
     A=terminal_nodes[i]
     B=A
     C=feature.n[feature.oid==A].values.tolist()[0]
@@ -465,6 +473,9 @@ def ontonet_generator(tidy_set
       )
   
   for i in np.arange(len(non_terminal_nodes)):
+    tick+=1
+    pb.update(tick)
+    
     A=non_terminal_nodes[i]
     B=hierarchy['from'][hierarchy['to']==A].values.tolist()
     C=feature.n[feature.oid==A].values.tolist()[0]
@@ -510,8 +521,12 @@ def ontonet_generator(tidy_set
   
   del i, A, B, C
   
+  tick+=1
+  pb.update(tick)
   model=keras.Model(inputs=inputs,outputs=outputs)
   
+  tick+=1
+  pb.update(tick)
   if not path:
     pass
   else:

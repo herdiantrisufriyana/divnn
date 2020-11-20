@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 
+
 class AnnotatedDataFrame(object):
   
   """
@@ -116,3 +117,34 @@ class AnnotatedDataFrame(object):
       elif len(msg2)>0:
         print('labelDescription')
       print('  '+varMetadata+': labelDescription',end=' ')
+
+
+def varLabels(AnnotatedDataFrame):
+  """
+  Retrieve information from AnnotatedDataFrame recorded in ExpressionSet
+  
+  These generic functions access the variable names data stored in an object
+  derived from the eSet-class. This method and the documentation are adapted
+  from the original method in Bioconductor by Biocore team.
+  
+  :param AnnotatedDataFrame: An AnnotatedDataFrame object.
+  :return: A list of strings of measured variable names.
+  """
+  
+  return AnnotatedDataFrame.data.columns.values.tolist()
+
+
+def varMetadata(AnnotatedDataFrame):
+  """
+  Retrieve information from AnnotatedDataFrame recorded in ExpressionSet
+  
+  These generic functions access the variable meta-data stored in an object
+  derived from the eSet-class. This method and the documentation are adapted
+  from the original method in Bioconductor by Biocore team.
+  
+  :param AnnotatedDataFrame: An AnnotatedDataFrame object.
+  :return: A pandas data frame with variable names as rows, description tags
+  (e.g., unit of measurement) as columns.
+  """
+  
+  return AnnotatedDataFrame.varMetadata

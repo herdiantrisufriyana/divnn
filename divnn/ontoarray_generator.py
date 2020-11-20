@@ -1,6 +1,5 @@
-import numpy as np
-import pandas as pd
 import keras
+from divnn.ExpressionSet import *
 
 def ontoarray_generator(tidy_set,index,batch_size):
   

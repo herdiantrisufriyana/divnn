@@ -1,8 +1,7 @@
 import os
 import tarfile
-import pandas as pd
-import numpy as np
 import regex as re
+from divnn.ExpressionSet import *
 from dfply import *
 
 def read_ts_tar_gz(path):
