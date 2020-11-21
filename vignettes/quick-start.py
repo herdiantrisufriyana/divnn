@@ -44,7 +44,7 @@ tidy_set=TidySet.read('vignettes/quick-start-py/tidy_set_py.ts.tar.gz')
 # Create ontonet
 ontonet=generator.ontonet(tidy_set,path='vignettes/quick-start-py/ontonet_py')
 
-# Set up hyperparameters
+# Tuning parameters
 ontonet.compile(
     optimizer=keras.optimizers.SGD(
       learning_rate=2**-6
