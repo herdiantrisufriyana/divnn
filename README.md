@@ -19,8 +19,8 @@ tidy (expression) set, training array, and Keras CNN model.
 
 ## Quick Start divnn R
 
-https://htmlpreview.github.io/?https://github.com/herdiantrisufriyana/divnn/blob/master/vignettes/quick-start-R.html
+<a href="https://htmlpreview.github.io/?https://github.com/herdiantrisufriyana/divnn/blob/master/vignettes/quick-start-R.html" target="_blank">Read simple example in R</a>
 
 ## Quick Start divnn python
 
-https://htmlpreview.github.io/?https://github.com/herdiantrisufriyana/divnn/blob/master/vignettes/quick-start-py.html
+<a href="https://htmlpreview.github.io/?https://github.com/herdiantrisufriyana/divnn/blob/master/vignettes/quick-start-py.html" target="_blank">Read simple example in python</a>
