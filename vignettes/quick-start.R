@@ -3,7 +3,6 @@ library(divnn)
 library(tidyverse)
 library(BiocGenerics)
 library(Biobase)
-library(igraph)
 library(pbapply)
 library(matrixStats)
 Sys.setenv('CUDA_VISIBLE_DEVICES'=-1)
@@ -13,9 +12,7 @@ use_backend('tensorflow')
 # Load simulated data
 input=utils.example()
 
-input$value 
-
-# Create TidySet
+# Compile input to a TidySet
 tidy_set=
   TidySet.create(
     value=input$value
@@ -114,17 +111,8 @@ history=
     ,verbose=1
   )
 
-history$metrics %>%
-  .[c('loss','val_loss')] %>%
-  do.call(cbind,.) %>%
-  as.data.frame() %>%
-  mutate(iteration=seq(nrow(.))) %>%
-  gather(metric,value,-iteration) %>%
-  qplot(
-    iteration,value,color=metric,data=.
-    ,geom='smooth',method='loess',formula=y~x,se=F
-  ) +
-  theme_minimal()
+saveRDS(history,'vignettes/quick-start-R/history_R.rds')
+save_model_weights_hdf5(ontonet,'vignettes/quick-start-R/ontonet_R.h5')
 
 # Model evaluation
 set.seed(33)
@@ -143,6 +131,8 @@ evaluation=
       )
   })
 
+saveRDS(evaluation,'vignettes/quick-start-R/evaluation_R.rds')
+
 results=
   evaluation %>%
   lapply(X=seq(length(.)),Y=.,function(X,Y){
@@ -157,5 +147,3 @@ results=
     ,lb=mean(value)-qnorm(0.975)*sd(value)/sqrt(n())
     ,ub=mean(value)+qnorm(0.975)*sd(value)/sqrt(n())
   )
-
-sessionInfo()

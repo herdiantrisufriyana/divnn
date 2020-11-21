@@ -1,5 +1,5 @@
 ---
-title: "Quick Start"
+title: "DeepInsight Visible Neural Network: Quick Start divnn R"
 author:
   - name: Herdiantri Sufriyana
     affiliation:
@@ -23,7 +23,8 @@ package: divnn
 abstract: >
   This vignette explains how to use this package using simulated data. However,
   reader may need to read another vignette to apply the DeepInsight Visible
-  Neural Network (DI-VNN) model.
+  Neural Network (DI-VNN) model based on the original works of DeepInsight and
+  VNN from Alok Sharma and Michael Ku Yu, respectively.
 output:
   BiocStyle::html_document:
     toc_float: true
@@ -33,17 +34,36 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r Load this package, include=FALSE}
+
+
+
+# Install and load
+
+You can install this package using function install_github() from devtools
+package. Then load this package.
+
+```{r Showing install and load this package, eval=FALSE, include=TRUE}
+devtools::install_github('herdiantrisufriyana/divnn')
 library(divnn)
 ```
 
-```{r Load other packages, include=FALSE}
-library(dplyr)
-library(tidyr)
-library(stringr)
-library(readr)
-library(tibble)
-library(ggplot2)
+Several packages are needed to load explicitly since training and the other
+functions are not included in this package. For simplicity, code to turn off
+your GPU is also provided below.
+
+```{r Showing load packages, eval=FALSE, include=TRUE}
+library(tidyverse)
+library(BiocGenerics)
+library(Biobase)
+library(pbapply)
+Sys.setenv('CUDA_VISIBLE_DEVICES'=-1)
+library(keras)
+use_backend('tensorflow')
+```
+
+```{r Load packages, include=FALSE}
+library(divnn)
+library(tidyverse)
 library(BiocGenerics)
 library(Biobase)
 library(pbapply)
@@ -52,6 +72,7 @@ Sys.setenv('CUDA_VISIBLE_DEVICES'=-1)
 library(keras)
 use_backend('tensorflow')
 ```
+
 
 # Load simulated data
 
@@ -114,7 +135,10 @@ are mapped onto.
 input$mapping %>%
   as.data.frame() %>%
   rename_all(function(x)str_replace_all(x,'V','dimension ')) %>%
-  knitr::kable(format='html',caption='Feature three-dimensional mapping matrix') %>%
+  knitr::kable(
+    format='html'
+    ,caption='Feature three-dimensional mapping matrix'
+  ) %>%
   kableExtra::kable_styling(full_width=T)
 ```
 
@@ -145,7 +169,7 @@ plot(input$hierarchy)
 
 Create a TidySet using this code.
 
-```{r Create a TidySet, eval=FALSE, echo=TRUE}
+```{r Compile input to a TidySet, eval=FALSE, echo=TRUE}
 tidy_set=
   TidySet.create(
     value=input$value
@@ -248,9 +272,9 @@ using learning rate (LR) of 2^-6, momentum of 0.9, and decay 10^-4. The loss
 function is mean squared error (MSE) with weight of 1 for main output and 0.3
 fir auxiliary output. The evaluation metric is accuracy.
 
-The LR will be reduce by factor of 0.1 at iteration 30, 60, and 80. Early
+The LR will be reduced by factor of 0.1 at iteration 30, 60, and 80. Early
 stopping will also happen if validation loss does not decrease >0.001 after
-30 iteration. The best weight at minimum validation loss will be applied.
+30 iterations. The best weight at minimum validation loss will be applied.
 
 ```{r Set up hyperparameters with callbacks, echo=TRUE}
 ontonet %>%
@@ -283,9 +307,9 @@ cb_early_stopping=
 # Data partition
 
 We hold out ~20% dataset for test set, while ~20% of the remaining will be a
-validation set. Training set
+validation set. Training set will use the 80% of the remaining instances.
 
-```{r Randomize sample for test set then validation and train sets, echo=FALSE}
+```{r echo=FALSE}
 set.seed(33)
 index=sample(1:dim(tidy_set)[2],dim(tidy_set)[2],F)
 
@@ -420,7 +444,7 @@ results=
 Therefore, the predictive performance of this model can be
 generalized for future, unobserved samples.
 
-```{r Show point and interval estimates of root accuracy, echo=FALSE}
+```{r echo=FALSE}
 results %>%
   filter(metric=='root_accuracy') %>%
   knitr::kable(
