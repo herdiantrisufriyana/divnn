@@ -45,7 +45,7 @@ ontonet=
   tidy_set %>%
   generator.ontonet(path='vignettes/quick-start-R/ontonet_R')
 
-# Set up hyperparameters
+# Tuning parameters
 ontonet %>%
   compile(
     optimizer=optimizer_sgd(lr=2^-6,momentum=0.9,decay=10^-4)
