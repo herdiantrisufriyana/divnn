@@ -23,14 +23,14 @@ are tidy (expression) set, training array, and Keras CNN model.
 <a href="https://htmlpreview.github.io/?https://github.com/herdiantrisufriyana/divnn/blob/master/vignettes/quick-start-R.html">
 Read vignette for simple example in R</a>
 
-<a href="https://github.com/herdiantrisufriyana/divnn/blob/master/vignettes/quick-start.R">R script</a>
+<a href="https://github.com/herdiantrisufriyana/divnn/blob/master/vignettes/quick-start.R">Download R script</a>
 
 ## Quick Start divnn python
 
 <a href="https://htmlpreview.github.io/?https://github.com/herdiantrisufriyana/divnn/blob/master/vignettes/quick-start-py.html">
 Read vignette for simple example in python</a>
 
-<a href="https://github.com/herdiantrisufriyana/divnn/blob/master/vignettes/quick-start.py">Python script</a>
+<a href="https://github.com/herdiantrisufriyana/divnn/blob/master/vignettes/quick-start.py">Download Python script</a>
 
 ## References
 
