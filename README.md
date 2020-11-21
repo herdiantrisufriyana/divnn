@@ -16,3 +16,11 @@ package vignette. The inputs are instance-feature value data frame, outcome
 vector, feature similarity matrix, feature three-dimensional mapping matrix,
 and ontology source-target-similarity-relation data frame. The outputs are
 tidy (expression) set, training array, and Keras CNN model.
+
+## Quick Start divnn R
+
+https://htmlpreview.github.io/?https://github.com/herdiantrisufriyana/divnn/blob/master/vignettes/quick-start-R.html
+
+## Quick Start divnn python
+
+https://htmlpreview.github.io/?https://github.com/herdiantrisufriyana/divnn/blob/master/vignettes/quick-start-py.html
