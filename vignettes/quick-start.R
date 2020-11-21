@@ -14,7 +14,7 @@ input=utils.example()
 
 # Compile input to a TidySet
 tidy_set=
-  TidySet.create(
+  TidySet.compile(
     value=input$value
     ,outcome=input$outcome
     ,similarity=input$similarity

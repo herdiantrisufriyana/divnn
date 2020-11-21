@@ -45,9 +45,9 @@
 #' ## Create input example
 #' input=utils.example()
 #'
-#' ## Create a TidySet
+#' ## Compile input to a TidySet
 #' tidy_set=
-#'   TidySet.create(
+#'   TidySet.compile(
 #'     value=input$value
 #'     ,outcome=input$outcome
 #'     ,similarity=input$similarity
@@ -79,7 +79,7 @@
 #' ## Recall an ontology data frame
 #' notes(tidy_set)$ontology
 
-TidySet.create=function(value
+TidySet.compile=function(value
                          ,outcome
                          ,similarity
                          ,mapping

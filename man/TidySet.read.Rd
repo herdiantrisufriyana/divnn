@@ -22,9 +22,9 @@ to a TidySet.
 ## Create input example
 input=utils.example()
 
-## Create a TidySet
+## Compile input to a TidySet
 tidy_set=
-  TidySet.create(
+  TidySet.compile(
     value=input$value
     ,outcome=input$outcome
     ,similarity=input$similarity
