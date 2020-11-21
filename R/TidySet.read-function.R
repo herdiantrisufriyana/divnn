@@ -6,7 +6,7 @@
 #' @param path A character of .ts.tar.gz file path (include file extension).
 #'
 #' @return output A TidySet, an ExpressionSet with three tables. Function of
-#' \code{write_ts_tar_gz} can write this file from the TidySet.
+#' \code{TidySet.write} can write this file from the TidySet.
 #'
 #' @keywords .ts.tar.gz, TidySet
 #'
@@ -15,11 +15,11 @@
 #' @examples
 #'
 #' ## Create input example
-#' input=input_example()
+#' input=utils.example()
 #'
 #' ## Create a TidySet
 #' tidy_set=
-#'   create_tidy_set(
+#'   TidySet.create(
 #'     value=input$value
 #'     ,outcome=input$outcome
 #'     ,similarity=input$similarity
@@ -28,12 +28,12 @@
 #'   )
 #'
 #' ## Write a .ts.tar.gz file from a TidySet
-#' write_tidy_set(tidy_set,'example')
+#' TidySet.write(tidy_set,'example')
 #'
 #' ## Read a .ts.tar.gz file to a TidySet
-#' read_ts_tar_gz('example.ts.tar.gz')
+#' TidySet.read('example.ts.tar.gz')
 
-read_ts_tar_gz=function(path){
+TidySet.read=function(path){
 
   filename=path
   path=str_remove_all(filename,'.ts.tar.gz')

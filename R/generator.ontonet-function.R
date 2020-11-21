@@ -19,11 +19,11 @@
 #' @examples
 #'
 #' ## Create input example
-#' input=input_example()
+#' input=utils.example()
 #'
 #' ## Create a TidySet
 #' tidy_set=
-#'   create_tidy_set(
+#'   TidySet.create(
 #'     value=input$value
 #'     ,outcome=input$outcome
 #'     ,similarity=input$similarity
@@ -32,9 +32,9 @@
 #'   )
 #'
 #' ## Create ontonet (Keras model object) generator function
-#' ontonet=ontonet_generator(tidy_set)
+#' ontonet=generator.ontonet(tidy_set)
 
-ontonet_generator=function(tidy_set
+generator.ontonet=function(tidy_set
                            ,path=NULL
                            ,init_seed=888
                            ,init2_seed=9999){

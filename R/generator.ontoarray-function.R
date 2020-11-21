@@ -23,11 +23,11 @@
 #' @examples
 #'
 #' ## Create input example
-#' input=input_example()
+#' input=utils.example()
 #'
 #' ## Create a TidySet
 #' tidy_set=
-#'   create_tidy_set(
+#'   TidySet.create(
 #'     value=input$value
 #'     ,outcome=input$outcome
 #'     ,similarity=input$similarity
@@ -36,7 +36,7 @@
 #'   )
 #'
 #' ## Create ontonet (Keras model object) generator function
-#' ontonet=ontonet_generator(tidy_set)
+#' ontonet=generator.ontonet(tidy_set)
 #'
 #' ## Randomize sample and split indices for train and test set
 #' set.seed(33)
@@ -54,14 +54,14 @@
 #'   ) %>%
 #'   fit_generator(
 #'     generator=
-#'       ontoarray_generator(
+#'       generator.ontoarray(
 #'         tidy_set
 #'         ,index=index[train_i]
 #'         ,batch_size=4
 #'       )
 #'     ,steps_per_epoch=24
 #'     ,validation_data=
-#'       ontoarray_generator(
+#'       generator.ontoarray(
 #'         tidy_set
 #'         ,index=index[test_i]
 #'         ,batch_size=4
@@ -71,7 +71,7 @@
 #'     ,verbose=1
 #'   )
 
-ontoarray_generator=function(tidy_set,index,batch_size) {
+generator.ontoarray=function(tidy_set,index,batch_size) {
 
   # Recall ontomap
   ontomap=

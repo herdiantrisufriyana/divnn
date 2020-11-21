@@ -58,7 +58,7 @@ use_backend('tensorflow')
 Load simulated data using this code.
 
 ```{r Create input example, echo=TRUE}
-input=input_example()
+input=utils.example()
 ```
 
 The first input is an instance-feature value data frame with rows for instances
@@ -147,7 +147,7 @@ Create a TidySet using this code.
 
 ```{r Create a TidySet, eval=FALSE, echo=TRUE}
 tidy_set=
-  create_tidy_set(
+  TidySet.create(
     value=input$value
     ,outcome=input$outcome
     ,similarity=input$similarity
@@ -156,7 +156,7 @@ tidy_set=
   )
 ```
 ```{r include=FALSE}
-tidy_set=read_ts_tar_gz('quick-start-R/tidy_set_R.ts.tar.gz')
+tidy_set=TidySet.read('quick-start-R/tidy_set_R.ts.tar.gz')
 ```
 
 TidySet is an ExpressionSet with three tables. Instance-feature
@@ -211,14 +211,14 @@ Use this code to save a TidySet by writing a .ts.tar.gz file containing
 exprs.csv, pData.csv, fData.csv, similarity.csv, ontology.csv, and others.txt.
 
 ```{r Save a TidySet, eval=FALSE, echo=TRUE}
-write_ts_tar_gz(tidy_set,'quick-start-R/tidy_set_R')
+TidySet.write(tidy_set,'quick-start-R/tidy_set_R')
 ```
 
-Function of read_ts_tar_gz can read this file back to a TidySet. Use
+Function of TidySet.read can read this file back to a TidySet. Use
 this code to load a TidySet by reading a .ts.tar.gz file.
 
 ```{r Load a TidySet, eval=FALSE, echo=TRUE}
-tidy_set=read_ts_tar_gz('quick-start-R/tidy_set_R.ts.tar.gz')
+tidy_set=TidySet.read('quick-start-R/tidy_set_R.ts.tar.gz')
 ```
 
 
@@ -232,7 +232,7 @@ specifying the file path; otherwise (by let it NULL), no JSON will be created.
 ```{r Create ontonet generator function, eval=FALSE, echo=TRUE}
 ontonet=
   tidy_set %>%
-  ontonet_generator(path='quick-start-R/ontonet_R')
+  generator.ontonet(path='quick-start-R/ontonet_R')
 ```
 ```{r include=FALSE}
 ontonet=
@@ -329,14 +329,14 @@ history=
   ontonet %>%
   fit_generator(
     generator=
-      ontoarray_generator(
+      generator.ontoarray(
         tidy_set
         ,index[train_i]
         ,batch_size=32
       )
     ,steps_per_epoch=ceiling(length(train_i)/32)
     ,validation_data=
-      ontoarray_generator(
+      generator.ontoarray(
         tidy_set
         ,index[val_i]
         ,batch_size=32
@@ -384,7 +384,7 @@ evaluation=
     ontonet %>%
       evaluate_generator(
         generator=
-          ontoarray_generator(
+          generator.ontoarray(
             tidy_set
             ,index[test_i]
             ,batch_size=32

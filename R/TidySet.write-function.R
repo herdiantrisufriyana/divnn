@@ -9,7 +9,7 @@
 #'
 #' @return output A .ts.tar.gz file containing exprs.csv, pData.csv,
 #' fData.csv, similarity.csv, ontology.csv, and others.txt. Function of
-#' \code{read_ts_tar_gz} can read this file back to a TidySet.
+#' \code{TidySet.read} can read this file back to a TidySet.
 #'
 #' @keywords .ts.tar.gz, TidySet
 #'
@@ -18,11 +18,11 @@
 #' @examples
 #'
 #' ## Create input example
-#' input=input_example()
+#' input=utils.example()
 #'
 #' ## Create a TidySet
 #' tidy_set=
-#'   create_tidy_set(
+#'   TidySet.create(
 #'     value=input$value
 #'     ,outcome=input$outcome
 #'     ,similarity=input$similarity
@@ -33,7 +33,7 @@
 #' ## Write a .ts.tar.gz file from a TidySet
 #' write_tidy_set(tidy_set,'example')
 
-write_ts_tar_gz=function(tidy_set,path){
+TidySet.write=function(tidy_set,path){
 
   dir.create(path)
 

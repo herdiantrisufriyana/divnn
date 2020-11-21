@@ -11,13 +11,13 @@ library(keras)
 use_backend('tensorflow')
 
 # Load simulated data
-input=input_example()
+input=utils.example()
 
 input$value 
 
 # Create TidySet
 tidy_set=
-  create_tidy_set(
+  TidySet.create(
     value=input$value
     ,outcome=input$outcome
     ,similarity=input$similarity
@@ -38,15 +38,15 @@ notes(tidy_set)$ontotype
 notes(tidy_set)$ontology
 
 # Save a TidySet
-write_ts_tar_gz(tidy_set,'vignettes/quick-start-R/tidy_set_R')
+TidySet.write(tidy_set,'vignettes/quick-start-R/tidy_set_R')
 
 # Load a TidySet
-tidy_set=read_ts_tar_gz('vignettes/quick-start-R/tidy_set_R.ts.tar.gz')
+tidy_set=TidySet.read('vignettes/quick-start-R/tidy_set_R.ts.tar.gz')
 
 # Create ontonet
 ontonet=
   tidy_set %>%
-  ontonet_generator(path='vignettes/quick-start-R/ontonet')
+  generator.ontonet(path='vignettes/quick-start-R/ontonet_R')
 
 # Set up hyperparameters
 ontonet %>%
@@ -95,14 +95,14 @@ history=
   ontonet %>%
   fit_generator(
     generator=
-      ontoarray_generator(
+      generator.ontoarray(
         tidy_set
         ,index[train_i]
         ,batch_size=32
       )
     ,steps_per_epoch=ceiling(length(train_i)/32)
     ,validation_data=
-      ontoarray_generator(
+      generator.ontoarray(
         tidy_set
         ,index[val_i]
         ,batch_size=32
@@ -134,7 +134,7 @@ evaluation=
     ontonet %>%
       evaluate_generator(
         generator=
-          ontoarray_generator(
+          generator.ontoarray(
             tidy_set
             ,index[test_i]
             ,batch_size=32

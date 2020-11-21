@@ -19,13 +19,13 @@
 #' @examples
 #'
 #' ## Create input example
-#' input=input_example()
+#' input=utils.example()
 #'
 #' ## Show output and visualize the ontology by hierarchical clustering
 #' input
 #' plot(input$hierarchy)
 
-input_example=function(){
+utils.example=function(){
 
   ## Set an empty list of inputs and random seed
   input=list()
