@@ -382,6 +382,7 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
         Z=Z.append(feature.iloc[i,])
     Z=Z >> select(X.source,X.target,X.similarity,X.relation)
     feature=Z
+    feature=feature.reset_index(inplace=False)
   
   Y=feature >> select(X.source,X.target)
   Z=feature >> select(X.source)
