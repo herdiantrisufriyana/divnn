@@ -14,7 +14,7 @@ from tensorflow.keras.models import model_from_json
 # Create input example
 input=utils.example()
 
-# Compile input to TidySet
+# Compile input to a TidySet
 tidy_set=TidySet.compile(
     value=input['value']
     ,outcome=input['outcome']
@@ -23,17 +23,28 @@ tidy_set=TidySet.compile(
     ,ontology=input['ontology']
   )
 
+# Recall a similarity matrix
+notes(tidy_set.experimentData)['similarity']
+
+# Recall an ontomap four-dimensional array
+notes(tidy_set.experimentData)['ontomap']
+
+# Recall an ontotype list of two-dimensional matrices
+notes(tidy_set.experimentData)['ontotype']
+
+# Recall an ontology data frame
+notes(tidy_set.experimentData)['ontology']
+
+# Save a TidySet
 TidySet.write(tidy_set,'vignettes/quick-start-py/tidy_set_py')
 
+# Load a TidySet
 tidy_set=TidySet.read('vignettes/quick-start-py/tidy_set_py.ts.tar.gz')
 
+# Create ontonet
 ontonet=generator.ontonet(tidy_set,path='vignettes/quick-start-py/ontonet_py')
 
-json_file=open('vignettes/quick-start-py/ontonet_py.json','r')
-ontonet=json_file.read()
-json_file.close()
-ontonet=model_from_json(ontonet)
-
+# Set up hyperparameters
 ontonet.compile(
     optimizer=keras.optimizers.SGD(
       learning_rate=2**-6
@@ -58,6 +69,7 @@ cb_early_stopping=keras.callbacks.EarlyStopping(
     ,restore_best_weights=True
   )
 
+# Data partition
 np.random.seed(33)
 index=np.random.choice(
     np.arange(exprs(tidy_set).shape[1])
@@ -86,6 +98,7 @@ for i in index:
   if not i in [index[j] for j in (test_i+val_i)]:
     train_i.append(i)
 
+# Model training
 history=ontonet.fit_generator(
     generator=generator.ontoarray(
         tidy_set
@@ -114,6 +127,7 @@ with open('vignettes/quick-start-py/history_py.pkl','wb') as f:
 with open('vignettes/quick-start-py/history_py.pkl','rb') as f:
   history=pickle.load(f)
 
+# Model evaluation
 np.random.seed(33)
 evaluation={}
 for i in np.arange(30):
@@ -162,5 +176,3 @@ Z=Z.reset_index(inplace=False)
 del Z['index']
 results=Z
 del i, I, Y, Z
-
-results
