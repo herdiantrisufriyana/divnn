@@ -28,6 +28,7 @@ setup(
   ,license='GPL-3'
   ,install_requires=[
       'regex'
+      ,'operator'
       ,'pandas>=1.0.5'
       ,'numpy>=1.18.5'
       ,'scipy>=1.5.0'
