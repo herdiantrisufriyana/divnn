@@ -571,8 +571,8 @@ def ontoarray(TidySet,index,batch_size):
   outcome=pData(TidySet).outcome
   
   # Build a generator function to load a batch of ontoarray
-  outcome_names=operator.itemgetter(*index)(outcome.index.values.tolist())
-  outcome=operator.itemgetter(*index)(outcome.to_list())
+  outcome_names=list(operator.itemgetter(*index)(outcome.index.values.tolist()))
+  outcome=list(operator.itemgetter(*index)(outcome.to_list()))
   
   I=()
   for i in np.arange(len(ontomap.shape)):
