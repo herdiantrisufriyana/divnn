@@ -607,6 +607,6 @@ def ontoarray(TidySet,index,batch_size):
       y_vector[k]=list(operator.itemgetter(*rows)(outcome))
     # y_vector=list(y_vector.values())
     
-    batch=(x_array,y_vector)
+    batch={'inputs':x_array,'outputs':y_vector}
     
     yield(batch)
