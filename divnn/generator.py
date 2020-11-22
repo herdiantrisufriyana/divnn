@@ -432,7 +432,7 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
   non_terminal_nodes=hierarchy['to'].drop_duplicates().to_list()
   
   pb=ProgressBar(3+len(terminal_nodes)+len(non_terminal_nodes))
-  tick=0
+  tick=1
   pb.start()
   
   inputs=dict()
