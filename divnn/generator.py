@@ -6,7 +6,6 @@ from tensorflow import keras
 from tensorflow.keras import layers, activations
 from progressbar import ProgressBar
 import operator
-from time import sleep
 
 def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
   
@@ -432,7 +431,8 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
   
   non_terminal_nodes=hierarchy['to'].drop_duplicates().to_list()
   
-  pb=ProgressBar(len(terminal_nodes)+len(non_terminal_nodes))
+  pb=ProgressBar(3+len(terminal_nodes)+len(non_terminal_nodes))
+  tick=1
   pb.start()
   
   inputs=dict()
@@ -447,7 +447,8 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
   outputs=dict()
   
   for i in np.arange(len(terminal_nodes)):
-    pb.update(i)
+    tick+=1
+    pb.update(tick)
     
     A=terminal_nodes[i]
     B=A
@@ -469,10 +470,10 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
         ,kernel_initializer2=init2
         ,name=A
       )
-  j=i
   
   for i in np.arange(len(non_terminal_nodes)):
-    pb.update(i+j)
+    tick+=1
+    pb.update(tick)
     
     A=non_terminal_nodes[i]
     B=hierarchy['from'][hierarchy['to']==A].values.tolist()
@@ -517,12 +518,14 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
           ,name=A
         )
   
-  del i, j, A, B, C
-  pb.finish()
-  sleep(0.25)
+  del i, A, B, C
   
+  tick+=1
+  pb.update(tick)
   model=keras.Model(inputs=inputs,outputs=outputs)
   
+  tick+=1
+  pb.update(tick)
   if not path:
     pass
   else:
@@ -571,8 +574,8 @@ def ontoarray(TidySet,index,batch_size):
   outcome=pData(TidySet).outcome
   
   # Build a generator function to load a batch of ontoarray
-  outcome_names=list(operator.itemgetter(*index)(outcome.index.values.tolist()))
-  outcome=list(operator.itemgetter(*index)(outcome.to_list()))
+  outcome_names=operator.itemgetter(*index)(outcome.index.values.tolist())
+  outcome=operator.itemgetter(*index)(outcome.to_list())
   
   I=()
   for i in np.arange(len(ontomap.shape)):
@@ -598,13 +601,11 @@ def ontoarray(TidySet,index,batch_size):
     i=i+batch_size
     
     x_array={}
-    for k in ontofilter.keys():
-      x_array[k]=ontomap[rows] * ontofilter[k]
+    for k in ontofilter.keys(): x_array[k]=ontomap[rows] * ontofilter[k]
     x_array=list(x_array.values())
     
     y_vector={}
-    for k in ontofilter.keys():
-      y_vector[k]=list(operator.itemgetter(*rows)(outcome))
+    for k in ontotype.keys(): y_vector[k]=[outcome[j] for j in rows]
     y_vector=list(y_vector.values())
     
     batch=(x_array,y_vector)
