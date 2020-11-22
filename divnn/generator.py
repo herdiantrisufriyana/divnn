@@ -598,11 +598,13 @@ def ontoarray(TidySet,index,batch_size):
     i=i+batch_size
     
     x_array={}
-    for k in ontofilter.keys(): x_array[k]=ontomap[rows] * ontofilter[k]
+    for k in ontofilter.keys():
+      x_array[k]=ontomap[rows] * ontofilter[k]
     x_array=list(x_array.values())
     
     y_vector={}
-    for k in ontotype.keys(): y_vector[k]=[outcome[j] for j in rows]
+    for k in ontofilter.keys():
+      y_vector[k]=list(operator.itemgetter(*rows)(outcome))
     y_vector=list(y_vector.values())
     
     batch=(x_array,y_vector)
