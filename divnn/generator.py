@@ -5,6 +5,7 @@ from dfply import X, mutate, mask, select, rename, left_join
 from tensorflow import keras
 from tensorflow.keras import layers, activations
 from progressbar import ProgressBar
+import operator
 
 def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
   
@@ -573,14 +574,8 @@ def ontoarray(TidySet,index,batch_size):
   outcome=pData(TidySet).outcome
   
   # Build a generator function to load a batch of ontoarray
-  ontomap=ontomap[index]
-  I=[]
-  Y=[]
-  for i in index:
-    I.append(outcome.index.values.tolist()[i])
-    Y.append(outcome.to_list()[i])
-  outcome_names=I
-  outcome=Y
+  outcome_names=operator.itemgetter(*index)(outcome.index.values.tolist())
+  outcome=operator.itemgetter(*index)(outcome.to_list())
   
   I=()
   for i in np.arange(len(ontomap.shape)):
