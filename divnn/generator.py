@@ -6,6 +6,7 @@ from tensorflow import keras
 from tensorflow.keras import layers, activations
 from progressbar import ProgressBar
 import operator
+from time import sleep
 
 def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
   
@@ -539,6 +540,9 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
     pass
   else:
     print('\nOntonet has been saved to '+path+'.json')
+  
+  pb.finish()
+  sleep(0.25)
   
   return model
 
