@@ -432,8 +432,7 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
   
   non_terminal_nodes=hierarchy['to'].drop_duplicates().to_list()
   
-  pb=ProgressBar(2+len(terminal_nodes)+len(non_terminal_nodes))
-  tick=1
+  pb=ProgressBar(len(terminal_nodes)+len(non_terminal_nodes))
   pb.start()
   
   inputs=dict()
@@ -448,8 +447,7 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
   outputs=dict()
   
   for i in np.arange(len(terminal_nodes)):
-    tick+=1
-    pb.update(tick)
+    pb.update(i)
     
     A=terminal_nodes[i]
     B=A
@@ -471,10 +469,10 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
         ,kernel_initializer2=init2
         ,name=A
       )
+  j=i
   
   for i in np.arange(len(non_terminal_nodes)):
-    tick+=1
-    pb.update(tick)
+    pb.update(i+j)
     
     A=non_terminal_nodes[i]
     B=hierarchy['from'][hierarchy['to']==A].values.tolist()
@@ -519,14 +517,12 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
           ,name=A
         )
   
-  del i, A, B, C
+  del i, j, A, B, C
+  pb.finish()
+  sleep(0.25)
   
-  tick+=1
-  pb.update(tick)
   model=keras.Model(inputs=inputs,outputs=outputs)
   
-  tick+=1
-  pb.update(tick)
   if not path:
     pass
   else:
@@ -540,9 +536,6 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
     pass
   else:
     print('\nOntonet has been saved to '+path+'.json')
-  
-  pb.finish()
-  sleep(0.25)
   
   return model
 
