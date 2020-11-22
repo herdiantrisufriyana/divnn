@@ -12,31 +12,31 @@ from tensorflow import keras
 from tensorflow.keras.models import model_from_json
 
 # Create input example
-# input=utils.example()
+input=utils.example()
 
 # Compile input to a TidySet
-# tidy_set=TidySet.compile(
-#     value=input['value']
-#     ,outcome=input['outcome']
-#     ,similarity=input['similarity']
-#     ,mapping=input['mapping']
-#     ,ontology=input['ontology']
-#   )
+tidy_set=TidySet.compile(
+    value=input['value']
+    ,outcome=input['outcome']
+    ,similarity=input['similarity']
+    ,mapping=input['mapping']
+    ,ontology=input['ontology']
+  )
 
 # Recall a similarity matrix
-# notes(tidy_set.experimentData)['similarity']
+notes(tidy_set.experimentData)['similarity']
 
 # Recall an ontomap four-dimensional array
-# notes(tidy_set.experimentData)['ontomap']
+notes(tidy_set.experimentData)['ontomap']
 
 # Recall an ontotype list of two-dimensional matrices
-# notes(tidy_set.experimentData)['ontotype']
+notes(tidy_set.experimentData)['ontotype']
 
 # Recall an ontology data frame
-# notes(tidy_set.experimentData)['ontology']
+notes(tidy_set.experimentData)['ontology']
 
 # Save a TidySet
-# TidySet.write(tidy_set,'vignettes/quick-start-py/tidy_set_py')
+TidySet.write(tidy_set,'vignettes/quick-start-py/tidy_set_py')
 
 # Load a TidySet
 tidy_set=TidySet.read('vignettes/quick-start-py/tidy_set_py.ts.tar.gz')
@@ -117,16 +117,16 @@ history=ontonet.fit_generator(
     ,verbose=1
   )
 
-# ontonet.save_weights('vignettes/quick-start-py/ontonet_py.h5')
+ontonet.save_weights('vignettes/quick-start-py/ontonet_py.h5')
 
-# ontonet.load_weights('vignettes/quick-start-py/ontonet_py.h5')
+ontonet.load_weights('vignettes/quick-start-py/ontonet_py.h5')
 
-# with open('vignettes/quick-start-py/history_py.pkl','wb') as f:
-#   pickle.dump(history.history,f)
+with open('vignettes/quick-start-py/history_py.pkl','wb') as f:
+  pickle.dump(history.history,f)
 
-# with open('vignettes/quick-start-py/history_py.pkl','rb') as f:
-#   history=pickle.load(f)
-history=history.history
+with open('vignettes/quick-start-py/history_py.pkl','rb') as f:
+  history=pickle.load(f)
+
 # Model evaluation
 np.random.seed(33)
 evaluation={}
@@ -145,11 +145,11 @@ for i in np.arange(30):
     ,steps=math.ceil(len(test_i)/32)
   )
 
-# with open('vignettes/quick-start-py/evaluation_py.pkl','wb') as f:
-#   pickle.dump(evaluation,f)
-# 
-# with open('vignettes/quick-start-py/evaluation_py.pkl','rb') as f:
-#   evaluation=pickle.load(f)
+with open('vignettes/quick-start-py/evaluation_py.pkl','wb') as f:
+  pickle.dump(evaluation,f)
+
+with open('vignettes/quick-start-py/evaluation_py.pkl','rb') as f:
+  evaluation=pickle.load(f)
 
 I=[]
 for i in history.keys():
