@@ -12,7 +12,7 @@ use_backend('tensorflow')
 # Load simulated data
 input=utils.example()
 
-# Compile input to a TidySet
+# Compile to a TidySet
 tidy_set=
   TidySet.compile(
     value=input$value
