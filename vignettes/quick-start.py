@@ -14,7 +14,7 @@ from tensorflow.keras.models import model_from_json
 # Create input example
 input=utils.example()
 
-# Compile input to a TidySet
+# Compile to a TidySet
 tidy_set=TidySet.compile(
     value=input['value']
     ,outcome=input['outcome']
