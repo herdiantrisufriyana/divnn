@@ -35,6 +35,7 @@ setup(
       ,'progressbar>=2.5'
       ,'sklearn>=0.0'
       ,'tensorflow==2.0.0'
+      ,'tensorflow-gpu==2.0.0'
     ]
   ,URL='https://github.com/herdiantrisufriyana/divnn'
 )
