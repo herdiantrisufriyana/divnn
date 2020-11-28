@@ -303,13 +303,10 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
     
     aux_output=layers.Dense(
       units=1
-      ,activation='tanh'
+      ,activation='sigmoid'
       ,kernel_initializer=kernel_initializer2
-      ,name=namer(name,'_ao_tn')
+      ,name=name
     )(aux_output)
-    aux_output=layers.BatchNormalization(
-        name=name
-      )(aux_output)
     
     return aux_output
   
@@ -348,13 +345,10 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
     
     output=layers.Dense(
       units=1
-      ,activation='tanh'
+      ,activation='sigmoid'
       ,kernel_initializer=kernel_initializer2
-      ,name=namer(name,'_mo_tn')
+      ,name=name
     )(output)
-    output=layers.BatchNormalization(
-        name=name
-      )(output)
     
     return output
   
