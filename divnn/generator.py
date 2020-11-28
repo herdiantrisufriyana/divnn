@@ -302,7 +302,7 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
       )(aux_output)
     
     aux_output=layers.Dense(
-      units=2
+      units=1
       ,activation='tanh'
       ,kernel_initializer=kernel_initializer2
       ,name=namer(name,'_ao_tn')
@@ -347,7 +347,7 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
       )(output)
     
     output=layers.Dense(
-      units=2
+      units=1
       ,activation='tanh'
       ,kernel_initializer=kernel_initializer2
       ,name=namer(name,'_mo_tn')
