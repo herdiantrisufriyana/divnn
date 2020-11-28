@@ -263,7 +263,7 @@ generator.ontonet=function(tidy_set
       layer_activation_relu(name=paste0(name,'_hl3_ac')) %>%
 
       layer_dense(
-        units=2
+        units=1
         ,activation='tanh'
         ,kernel_initializer=kernel_initializer2
         ,name=paste0(name,'_ao_tn')
@@ -296,7 +296,7 @@ generator.ontonet=function(tidy_set
       layer_activation_relu(name=paste0(name,'_hl1_ac')) %>%
 
       layer_dense(
-        units=2
+        units=1
         ,activation='tanh'
         ,kernel_initializer=kernel_initializer2
         ,name=paste0(name,'_mo_tn')
