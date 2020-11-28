@@ -604,7 +604,7 @@ def ontoarray(TidySet,index,batch_size):
     x_array=list(x_array.values())
     
     y_vector={}
-    for k in ontotype.keys(): y_vector[k]=[(outcome[j]-1)*2 for j in rows]
+    for k in ontotype.keys(): y_vector[k]=[(outcome[j]-0.5)*2 for j in rows]
     y_vector=list(y_vector.values())
     
     batch=(x_array,y_vector)
