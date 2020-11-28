@@ -303,7 +303,7 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
     
     aux_output=layers.Dense(
       units=1
-      ,activation='sigmoid'
+      ,activation='tanh'
       ,kernel_initializer=kernel_initializer2
       ,name=name
     )(aux_output)
@@ -345,7 +345,7 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
     
     output=layers.Dense(
       units=1
-      ,activation='sigmoid'
+      ,activation='tanh'
       ,kernel_initializer=kernel_initializer2
       ,name=name
     )(output)
@@ -604,7 +604,7 @@ def ontoarray(TidySet,index,batch_size):
     x_array=list(x_array.values())
     
     y_vector={}
-    for k in ontotype.keys(): y_vector[k]=[outcome[j] for j in rows]
+    for k in ontotype.keys(): y_vector[k]=[(outcome[j]-1)*2 for j in rows]
     y_vector=list(y_vector.values())
     
     batch=(x_array,y_vector)
