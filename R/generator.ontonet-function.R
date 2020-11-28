@@ -264,7 +264,7 @@ generator.ontonet=function(tidy_set
 
       layer_dense(
         units=1
-        ,activation='tanh'
+        ,activation='sigmoid'
         ,kernel_initializer=kernel_initializer2
         ,name=name
       )
@@ -296,7 +296,7 @@ generator.ontonet=function(tidy_set
 
       layer_dense(
         units=1
-        ,activation='tanh'
+        ,activation='sigmoid'
         ,kernel_initializer=kernel_initializer2
         ,name=name
       )

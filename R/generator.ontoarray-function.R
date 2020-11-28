@@ -122,7 +122,7 @@ generator.ontoarray=function(tidy_set,index,batch_size) {
     y_vector=
       outcome %>%
       .[rows] %>%
-      lapply(X=seq(length(ontotype)),Y=.,function(X,Y)(Y-0.5)*2) %>%
+      lapply(X=seq(length(ontotype)),Y=.,function(X,Y)Y) %>%
       setNames(names(ontotype))
 
     list(x_array, y_vector)
