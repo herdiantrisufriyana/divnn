@@ -308,8 +308,14 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
       ,name=namer(name,'_ao_tn')
     )(aux_output)
     aux_output=layers.BatchNormalization(
-        name=name
+        name=namer(name,'_ao_bn')
       )(aux_output)
+    aux_output=layers.Dense(
+      units=1
+      ,activation='sigmoid'
+      ,kernel_initializer=kernel_initializer2
+      ,name=name
+    )(aux_output)
     
     return aux_output
   
