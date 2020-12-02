@@ -359,8 +359,14 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
       ,name=namer(name,'_mo_tn')
     )(output)
     output=layers.BatchNormalization(
-        name=name
+        name=namer(name,'_mo_bn')
       )(output)
+    output=layers.Dense(
+      units=1
+      ,activation='sigmoid'
+      ,kernel_initializer=kernel_initializer2
+      ,name=name
+    )(output)
     
     return output
   
