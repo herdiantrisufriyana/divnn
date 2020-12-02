@@ -310,9 +310,9 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
     aux_output=layers.BatchNormalization(
         name=namer(name,'_ao_bn')
       )(aux_output)
-    output=layers.Flatten(
+    aux_output=layers.Flatten(
       name=namer(name,'_ao_fl')
-    )(output)
+    )(aux_output)
     aux_output=layers.Dense(
       units=1
       ,activation='sigmoid'
