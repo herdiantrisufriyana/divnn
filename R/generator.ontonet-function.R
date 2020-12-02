@@ -268,7 +268,13 @@ generator.ontonet=function(tidy_set
         ,kernel_initializer=kernel_initializer2
         ,name=paste0(name,'_ao_tn')
       ) %>%
-      layer_batch_normalization(name=name)
+      layer_batch_normalization(name=paste0(name,'_ao_bn')) %>%
+      layer_dense(
+        units=1
+        ,activation='sigmoid'
+        ,kernel_initializer=kernel_initializer2
+        ,name=name
+      )
 
   }
 
