@@ -269,6 +269,7 @@ generator.ontonet=function(tidy_set
         ,name=paste0(name,'_ao_tn')
       ) %>%
       layer_batch_normalization(name=paste0(name,'_ao_bn')) %>%
+      layer_flatten(name=paste0(name,'_ao_fl')) %>%
       layer_dense(
         units=1
         ,activation='sigmoid'
@@ -308,6 +309,7 @@ generator.ontonet=function(tidy_set
         ,name=paste0(name,'_mo_tn')
       ) %>%
       layer_batch_normalization(name=paste0(name,'_mo_bn')) %>%
+      layer_flatten(name=paste0(name,'_mo_fl')) %>%
       layer_dense(
         units=1
         ,activation='sigmoid'
