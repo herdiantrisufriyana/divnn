@@ -6,7 +6,7 @@ from tensorflow import keras
 from tensorflow.keras import layers, activations
 from progressbar import ProgressBar
 
-def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
+def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999,lambda=0):
   
   """
   Make an ontonet generator for visible neural network (VNN) modeling
@@ -19,6 +19,7 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
   :param path: A character of file path if the model json file is saved.
   :param init_seed: An integer of random seed for ReLU initializer.
   :param init2_seed: An integer of random seed for tanh initializer.
+  :param lambda: A floating number of L2-norm regularization factor.
   :return: output Keras model object, a pointer to Keras model object in python
   environment, which will be an input to train VNN model using Keras R package.
   """
@@ -243,6 +244,7 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
                        ,units
                        ,kernel_initializer
                        ,kernel_initializer2
+                       ,activity_regularizer
                        ,name=None):
     
     def namer(name,suffix):
@@ -317,6 +319,7 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
       units=1
       ,activation='sigmoid'
       ,kernel_initializer=kernel_initializer2
+      ,activity_regularizer=activity_regularizer
       ,name=name
     )(aux_output)
     
@@ -327,6 +330,7 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
                        ,units
                        ,kernel_initializer
                        ,kernel_initializer2
+                       ,activity_regularizer
                        ,name=None):
     
     def namer(name,suffix):
@@ -371,6 +375,7 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
       units=1
       ,activation='sigmoid'
       ,kernel_initializer=kernel_initializer2
+      ,activity_regularizer=activity_regularizer
       ,name=name
     )(output)
     
@@ -380,6 +385,7 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
   keras.backend.clear_session()
   init=keras.initializers.he_uniform(seed=init_seed)
   init2=keras.initializers.glorot_uniform(seed=init2_seed)
+  reg=keras.regularizers.l2(l2=lambda)
   
   feature=ontology
   while any('ONT' in s for s in feature.source):
@@ -485,6 +491,7 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
         ,units=np.max([20,math.ceil(0.3*C)])
         ,kernel_initializer=init
         ,kernel_initializer2=init2
+        ,activity_regularizer=reg
         ,name=A
       )
   
@@ -524,6 +531,7 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
           ,units=np.max([20,math.ceil(0.3*C)])
           ,kernel_initializer=init
           ,kernel_initializer2=init2
+          ,activity_regularizer=reg
           ,name=A
         )
     else:
@@ -532,6 +540,7 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999):
           ,units=np.max([20,math.ceil(0.3*C)])
           ,kernel_initializer=init
           ,kernel_initializer2=init2
+          ,activity_regularizer=reg
           ,name=A
         )
   
