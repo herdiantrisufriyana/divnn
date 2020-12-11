@@ -8,6 +8,7 @@
 #' @param path A character of file path if the model json file is saved.
 #' @param init_seed An integer of random seed for ReLU initializer.
 #' @param init2_seed An integer of random seed for tanh initializer.
+#' @param lambda A numeric of L2-norm regularization factor.
 #'
 #' @return output Keras model object, a pointer to Keras model object in python
 #' environment, which will be an input to train VNN model using Keras R package.
@@ -37,7 +38,8 @@
 generator.ontonet=function(tidy_set
                            ,path=NULL
                            ,init_seed=888
-                           ,init2_seed=9999){
+                           ,init2_seed=9999
+                           ,lambda=0){
 
   # Recall ontomap
   ontomap=
@@ -224,6 +226,7 @@ generator.ontonet=function(tidy_set
                             ,units
                             ,kernel_initializer
                             ,kernel_initializer2
+                            ,activity_regularizer
                             ,name=NULL){
 
     object %>%
@@ -274,6 +277,7 @@ generator.ontonet=function(tidy_set
         units=1
         ,activation='sigmoid'
         ,kernel_initializer=kernel_initializer2
+        ,activity_regularizer=activity_regularizer
         ,name=name
       )
 
@@ -284,6 +288,7 @@ generator.ontonet=function(tidy_set
                         ,units
                         ,kernel_initializer
                         ,kernel_initializer2
+                        ,activity_regularizer
                         ,name=NULL){
 
     object %>%
@@ -314,6 +319,7 @@ generator.ontonet=function(tidy_set
         units=1
         ,activation='sigmoid'
         ,kernel_initializer=kernel_initializer2
+        ,activity_regularizer=activity_regularizer
         ,name=name
       )
 
@@ -324,6 +330,7 @@ generator.ontonet=function(tidy_set
   k_clear_session()
   init=initializer_he_uniform(seed=init_seed)
   init2=initializer_glorot_uniform(seed=init2_seed)
+  reg=regularizer_l2(l=lambda)
 
   feature=ontology
   while(sum(str_detect(feature$source,'ONT'))>0){
@@ -428,6 +435,7 @@ generator.ontonet=function(tidy_set
         ,units=max(20,ceiling(0.3*C))
         ,kernel_initializer=init
         ,kernel_initializer2=init2
+        ,activity_regularizer=reg
         ,name=A
       )
   }
@@ -475,6 +483,7 @@ generator.ontonet=function(tidy_set
           ,units=max(20,ceiling(0.3*C))
           ,kernel_initializer=init
           ,kernel_initializer2=init2
+          ,activity_regularizer=reg
           ,name=A
         )
     }else{
@@ -484,6 +493,7 @@ generator.ontonet=function(tidy_set
           units=max(20,ceiling(0.3*C))
           ,kernel_initializer=init
           ,kernel_initializer2=init2
+          ,activity_regularizer=reg
           ,name=A
         )
     }
