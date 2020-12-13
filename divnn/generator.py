@@ -385,6 +385,7 @@ def ontonet(TidySet,path=None,init_seed=888,init2_seed=9999,l2_norm=0):
   keras.backend.clear_session()
   init=keras.initializers.he_uniform(seed=init_seed)
   init2=keras.initializers.glorot_uniform(seed=init2_seed)
+  
   reg=keras.regularizers.l2(l2_norm)
   
   feature=ontology
