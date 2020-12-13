@@ -330,7 +330,7 @@ generator.ontonet=function(tidy_set
   k_clear_session()
   init=initializer_he_uniform(seed=init_seed)
   init2=initializer_glorot_uniform(seed=init2_seed)
-  reg=regularizer_l2(l=l2_norm)
+  reg=regularizer_l2(l2_norm)
 
   feature=ontology
   while(sum(str_detect(feature$source,'ONT'))>0){
