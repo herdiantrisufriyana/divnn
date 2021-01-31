@@ -4,7 +4,13 @@
 \alias{generator.ontonet}
 \title{Make an ontonet generator for visible neural network (VNN) modeling}
 \usage{
-generator.ontonet(tidy_set, path = NULL, init_seed = 888, init2_seed = 9999)
+generator.ontonet(
+  tidy_set,
+  path = NULL,
+  init_seed = 888,
+  init2_seed = 9999,
+  l2_norm = 0
+)
 }
 \arguments{
 \item{tidy_set}{TidySet, an ExpressionSet with three tables.}
@@ -14,6 +20,8 @@ generator.ontonet(tidy_set, path = NULL, init_seed = 888, init2_seed = 9999)
 \item{init_seed}{An integer of random seed for ReLU initializer.}
 
 \item{init2_seed}{An integer of random seed for tanh initializer.}
+
+\item{l2_norm}{A numeric of L2-norm regularization factor.}
 }
 \value{
 output Keras model object, a pointer to Keras model object in python
