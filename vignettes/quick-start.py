@@ -10,6 +10,7 @@ import math
 os.environ['CUDA_VISIBLE_DEVICES']='-1'
 from tensorflow import keras
 from tensorflow.keras.models import model_from_json
+from collections import Counter
 
 # Create input example
 input=utils.example()
@@ -44,6 +45,11 @@ tidy_set=TidySet.read('vignettes/quick-start-py/tidy_set_py.ts.tar.gz')
 # Create ontonet
 ontonet=generator.ontonet(tidy_set,path='vignettes/quick-start-py/ontonet_py')
 
+json_file=open('vignettes/quick-start-py/ontonet_py.json','r')
+ontonet=json_file.read()
+json_file.close()
+ontonet=model_from_json(ontonet)
+
 # Tuning parameters
 ontonet.compile(
     optimizer=keras.optimizers.SGD(
@@ -75,40 +81,36 @@ index=np.random.choice(
     np.arange(exprs(tidy_set).shape[1])
     ,size=exprs(tidy_set).shape[1]
     ,replace=False
-  ).tolist()
+).tolist()
 
 test_i=np.random.choice(
     index
     ,size=np.round(0.2*len(index)).astype(int)
     ,replace=False
-  ).tolist()
+).tolist()
 
-val_i=[]
-for i in index:
-  if not i in [index[j] for j in test_i]:
-    val_i.append(i)
+val_i=list((Counter(index)-Counter(test_i)).elements())
+
+np.random.seed(33)
 val_i=np.random.choice(
     val_i
     ,size=np.round(0.2*len(val_i)).astype(int)
     ,replace=False
-  ).tolist()
+).tolist()
 
-train_i=[]
-for i in index:
-  if not i in [index[j] for j in (test_i+val_i)]:
-    train_i.append(i)
+train_i=list((Counter(index)-(Counter(test_i)+Counter(val_i))).elements())
 
 # Model training
 history=ontonet.fit_generator(
     generator=generator.ontoarray(
         tidy_set
-        ,[index[i] for i in train_i]
+        ,train_i
         ,batch_size=32
       )
     ,steps_per_epoch=math.ceil(len(train_i)/32)
     ,validation_data=generator.ontoarray(
         tidy_set
-        ,[index[i] for i in val_i]
+        ,val_i
         ,batch_size=32
       )
     ,validation_steps=math.ceil(len(val_i)/32)
@@ -139,7 +141,7 @@ for i in np.arange(30):
   evaluation[i]=ontonet.evaluate_generator(
     generator=generator.ontoarray(
         tidy_set
-        ,[index[i] for i in test_i_boot]
+        ,test_i_boot
         ,batch_size=32
       )
     ,steps=math.ceil(len(test_i)/32)
@@ -167,7 +169,8 @@ for i in I:
   K=Y.result[Y.metric==i].to_list()
   Z=Z.append(
       pd.DataFrame.from_dict({
-        'mean':[np.mean(K)]
+        'metric':i
+        ,'mean':[np.mean(K)]
         ,'lb':[np.mean(K)-1.96*np.std(K)/np.sqrt(30)]
         ,'ub':[np.mean(K)+1.96*np.std(K)/np.sqrt(30)]
       })
