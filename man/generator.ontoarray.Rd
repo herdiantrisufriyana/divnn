@@ -22,7 +22,7 @@ in \code{fit_generator}, \code{evaluate_generator}, or
 \code{predict_generator} function from Keras R package.
 }
 \description{
-This function create a function that generate a batch of ontoarray for
+This function creates a function that generate a batch of ontoarray for
 training or testing a Keras Convolutional Neural Network (CNN) model using
 \code{fit_generator}, \code{evaluate_generator}, or \code{predict_generator}
 function from Keras R package.

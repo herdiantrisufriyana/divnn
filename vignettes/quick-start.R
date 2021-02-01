@@ -147,3 +147,43 @@ results=
     ,lb=mean(value)-qnorm(0.975)*sd(value)/sqrt(n())
     ,ub=mean(value)+qnorm(0.975)*sd(value)/sqrt(n())
   )
+
+# Model exploration
+
+## Visualization tables
+visualization=list()
+
+visualization$ontonet=
+  tidy_set %>%
+  viz.ontonet(
+    feature=T
+    ,eval.results=evaluation
+    ,eval.metric='accuracy'
+    ,eval.pal=c('#E64B35FF','#00A087FF')
+  )
+
+visualization$ontoarray=
+  tidy_set %>%
+  viz.ontoarray(ontonet,batch_size=32,verbose=F)
+
+## Ontonet showing accuracy per ontology
+visualization$ontonet %>%
+  plot(
+    node.shape='square'
+    ,label=T
+    ,label.family='serif'
+    ,label.cex=0.85
+    ,asp=0
+    ,ylim=c(-1,1)
+    ,xlim=c(-1,1)
+  )
+
+## Ontoarray representation
+visualization$ontoarray %>%
+  plot(
+    pal=c('#E64B35FF','#00A087FF')
+    ,label=T
+    ,label.family='serif'
+    ,label.size=3
+    ,grid_col=5
+  )

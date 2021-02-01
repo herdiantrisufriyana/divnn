@@ -1,6 +1,6 @@
 #' Make an ontonet generator for visible neural network (VNN) modeling
 #'
-#' This function create a function that generate a Keras Convolutional Neural
+#' This function creates a function that generate a Keras Convolutional Neural
 #' Network (CNN) model with a specific layer architecture for each path in the
 #' hierarchy of the given ontology.
 #'

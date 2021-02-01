@@ -28,7 +28,7 @@ output Keras model object, a pointer to Keras model object in python
 environment, which will be an input to train VNN model using Keras R package.
 }
 \description{
-This function create a function that generate a Keras Convolutional Neural
+This function creates a function that generate a Keras Convolutional Neural
 Network (CNN) model with a specific layer architecture for each path in the
 hierarchy of the given ontology.
 }
