@@ -1,7 +1,7 @@
 Package: divnn
 Type: Package
 Title: An implementation of the DeepInsight Visible Neural Network
-Version: 0.1.1
+Version: 0.1.2
 Date: 2020-11-10
 Authors@R: 
     c(person(given = "Herdiantri",
@@ -48,7 +48,8 @@ Imports:
     pbapply,
     matrixStats,
     tensorflow,
-    keras
+    keras,
+    igraph
 Suggests:
     BiocStyle,
     knitr,
