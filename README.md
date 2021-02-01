@@ -25,7 +25,7 @@ Read vignette for simple example in R</a>
 
 <a href="https://github.com/herdiantrisufriyana/divnn/blob/master/vignettes/quick-start.R">Download R script</a>
 
-<a href="https://github.com/herdiantrisufriyana/divnn/blob/master/man/divnn_0.1.1.pdf">Reference manual</a>
+<a href="https://github.com/herdiantrisufriyana/divnn/blob/master/man/divnn_0.1.2.pdf">Reference manual</a>
 
 ## Quick Start divnn python
 
