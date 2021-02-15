@@ -394,18 +394,38 @@ generator.ontonet=function(tidy_set
   on.exit(closepb(pb))
 
   setpb(pb,0)
+  ontoarray=
+    layer_input(
+      shape=dim(ontomap)[2:4]
+      ,dtype='float32'
+      ,name='ontoarray'
+    )
+  
+  ontofilters=
+    ontotype %>%
+    lapply(X=seq(length(.)),Y=.,Z=ontomap[1,,,,drop=F]*0,function(X,Y,Z){
+      
+      Z[,Y[[X]][,1],Y[[X]][,2],Y[[X]][,3]]=1
+      backend()$constant(
+        value=as.numeric(Z)
+        ,dtype='float32'
+        ,shape=dim(Z)[1:4]
+        ,name=paste0(names(Y)[X],'_filter')
+      )
+      
+    }) %>%
+    setNames(names(ontotype))
+  
   inputs=
     ontotype %>%
     lapply(
       X=seq(length(.))
       ,Y=.
-      ,Z=ontomap
-      ,FUN=function(X,Y,Z){
-        layer_input(
-          shape=dim(Z)[2:4]
-          ,dtype='float32'
-          ,name=paste0(names(Y)[X],'_input')
-        )
+      ,Z=ontoarray
+      ,K=ontofilters
+      ,FUN=function(X,Y,Z,K){
+        c(Z,K[[X]]) %>%
+          layer_multiply(name=paste0(names(Y)[X],'_input'))
       }) %>%
     setNames(names(ontotype))
 
@@ -505,7 +525,7 @@ generator.ontonet=function(tidy_set
   rm(i,A,B,C)
 
   setpb(pb,3+j)
-  model=keras_model(inputs=inputs,outputs=outputs)
+  model=keras_model(inputs=list(ontoarray=ontoarray),outputs=outputs)
 
   setpb(pb,4+j)
   if(!is.null(path)){

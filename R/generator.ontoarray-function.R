@@ -95,14 +95,6 @@ generator.ontoarray=function(tidy_set,index,batch_size) {
   ontomap=ontomap[index,,,,drop=F]
   outcome=outcome[index]
 
-  ontofilter=
-    ontotype %>%
-    lapply(X=seq(length(.)),Y=.,Z=ontomap[1,,,,drop=F]*0,function(X,Y,Z){
-      Z[,Y[[X]][,1],Y[[X]][,2],Y[[X]][,3]]=1
-      Z
-    }) %>%
-    setNames(paste0(names(ontotype),'_input'))
-
   i<-1
 
   function() {
@@ -111,13 +103,7 @@ generator.ontoarray=function(tidy_set,index,batch_size) {
     rows<-c(i:min(i+batch_size-1,dim(ontomap)[1]))
     i<<-i+batch_size
 
-    x_array=
-      ontomap %>%
-      .[rows,,,,drop=F] %>%
-      lapply(X=seq(length(ontofilter)),Y=ontofilter,Z=.,function(X,Y,Z){
-        sweep(Z,2:4,Y[[X]],FUN='*')
-      }) %>%
-      setNames(names(ontofilter))
+    x_array=list(ontoarray=ontomap[rows,,,,drop=F])
 
     y_vector=
       outcome %>%
