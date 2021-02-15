@@ -407,9 +407,8 @@ generator.ontonet=function(tidy_set
       
       Z[,Y[[X]][,1],Y[[X]][,2],Y[[X]][,3]]=1
       backend()$constant(
-        value=as.numeric(Z)
+        value=Z
         ,dtype='float32'
-        ,shape=dim(Z)[1:4]
         ,name=paste0(names(Y)[X],'_filter')
       )
       
