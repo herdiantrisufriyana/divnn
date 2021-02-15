@@ -97,16 +97,11 @@ generator.ontoarray=function(tidy_set,index,batch_size) {
 
   ontofilter=
     ontotype %>%
-    lapply(X=seq(length(.))
-           ,Y=.
-           ,Z=ontomap[seq(batch_size),,,,drop=F]*0
-           ,function(X,Y,Z){
-      
+    lapply(X=seq(length(.)),Y=.,Z=ontomap[1,,,,drop=F]*0,function(X,Y,Z){
       Z[,Y[[X]][,1],Y[[X]][,2],Y[[X]][,3]]=1
-      
-      keras_array(Z)
+      Z
     }) %>%
-    setNames(paste0(names(ontotype),'_filter'))
+    setNames(paste0(names(ontotype),'_input'))
 
   i<-1
 
@@ -117,13 +112,17 @@ generator.ontoarray=function(tidy_set,index,batch_size) {
     i<<-i+batch_size
 
     x_array=
-      list(ontoarray=keras_array(ontomap[rows,,,,drop=F])) %>%
-      c(ontofilter)
+      ontomap %>%
+      .[rows,,,,drop=F] %>%
+      lapply(X=seq(length(ontofilter)),Y=ontofilter,Z=.,function(X,Y,Z){
+        sweep(Z,2:4,Y[[X]],FUN='*')
+      }) %>%
+      setNames(names(ontofilter))
 
     y_vector=
       outcome %>%
       .[rows] %>%
-      lapply(X=seq(length(ontotype)),Y=.,function(X,Y)keras_array(Y)) %>%
+      lapply(X=seq(length(ontotype)),Y=.,function(X,Y)Y) %>%
       setNames(names(ontotype))
 
     list(x_array, y_vector)

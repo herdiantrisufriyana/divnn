@@ -394,14 +394,7 @@ generator.ontonet=function(tidy_set
   on.exit(closepb(pb))
 
   setpb(pb,0)
-  ontoarray=
-    layer_input(
-      shape=dim(ontomap)[2:4]
-      ,dtype='float32'
-      ,name='ontoarray'
-    )
-  
-  ontofilters=
+  inputs=
     ontotype %>%
     lapply(
       X=seq(length(.))
@@ -411,25 +404,11 @@ generator.ontonet=function(tidy_set
         layer_input(
           shape=dim(Z)[2:4]
           ,dtype='float32'
-          ,name=paste0(names(Y)[X],'_filter')
-        )
-    }) %>%
-    setNames(names(ontotype))
-  
-  inputs=
-    ontofilters %>%
-    lapply(
-      X=seq(length(.))
-      ,Y=.
-      ,Z=ontoarray
-      ,FUN=function(X,Y,Z){
-        layer_multiply(
-          c(Z,Y[[X]])
           ,name=paste0(names(Y)[X],'_input')
         )
-    }) %>%
+      }) %>%
     setNames(names(ontotype))
-  
+
   hiddens=list()
   outputs=list()
 
@@ -526,13 +505,7 @@ generator.ontonet=function(tidy_set
   rm(i,A,B,C)
 
   setpb(pb,3+j)
-  model=
-    keras_model(
-      inputs=
-        list(ontoarray=ontoarray) %>%
-        c(ontofilters)
-      ,outputs=outputs
-    )
+  model=keras_model(inputs=inputs,outputs=outputs)
 
   setpb(pb,4+j)
   if(!is.null(path)){
