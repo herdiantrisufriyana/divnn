@@ -89,9 +89,8 @@ generator.ontoarray=function(tidy_set,index,batch_size,sample_weights=NULL) {
 
   # Recall outcome
   outcome=tidy_set$outcome
-
+  
   # Build a generator function to load a batch of ontoarray
-
   ontomap=ontomap[index,,,,drop=F]
   outcome=outcome[index]
 
@@ -116,6 +115,7 @@ generator.ontoarray=function(tidy_set,index,batch_size,sample_weights=NULL) {
     }else{
       y_weight_vector=
         sample_weights %>%
+        .[index] %>%
         .[rows] %>%
         lapply(X=seq(length(ontotype)),Y=.,function(X,Y)Y) %>%
         setNames(names(ontotype))
