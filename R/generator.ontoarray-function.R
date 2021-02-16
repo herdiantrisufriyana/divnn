@@ -11,6 +11,8 @@
 #' @param batch_size An integer of how much samples are generated everytime
 #' this function runs. If all samples are generated,this function will loop over
 #' the samples.
+#' @param sample_weights An numeric vector for weighting the loss function. 
+#' This is useful to pay more losses for minority class.
 #'
 #' @return output sample generator, a function for argument of \code{generator}
 #' in \code{fit_generator}, \code{evaluate_generator}, or
