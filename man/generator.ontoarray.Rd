@@ -4,7 +4,7 @@
 \alias{generator.ontoarray}
 \title{Make an ontoarray generator for visible neural network (VNN) modeling}
 \usage{
-generator.ontoarray(tidy_set, index, batch_size)
+generator.ontoarray(tidy_set, index, batch_size, sample_weights = NULL)
 }
 \arguments{
 \item{tidy_set}{TidySet, an ExpressionSet with three tables.}
@@ -15,6 +15,9 @@ used for training or testing.}
 \item{batch_size}{An integer of how much samples are generated everytime
 this function runs. If all samples are generated,this function will loop over
 the samples.}
+
+\item{sample_weights}{An numeric vector for weighting the loss function.
+This is useful to pay more losses for minority class.}
 }
 \value{
 output sample generator, a function for argument of \code{generator}
