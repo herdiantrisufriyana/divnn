@@ -71,7 +71,7 @@
 #'     ,verbose=1
 #'   )
 
-generator.ontoarray=function(tidy_set,index,batch_size) {
+generator.ontoarray=function(tidy_set,index,batch_size,sample_weights=NULL) {
 
   # Recall ontomap
   ontomap=
@@ -111,7 +111,17 @@ generator.ontoarray=function(tidy_set,index,batch_size) {
       lapply(X=seq(length(ontotype)),Y=.,function(X,Y)Y) %>%
       setNames(names(ontotype))
 
-    list(x_array, y_vector)
+    if(is.null(sample_weights)){
+      list(x_array, y_vector)
+    }else{
+      y_weight_vector=
+        sample_weights %>%
+        .[rows] %>%
+        lapply(X=seq(length(ontotype)),Y=.,function(X,Y)Y) %>%
+        setNames(names(ontotype))
+      
+      list(x_array, y_vector, y_weight_vector)
+    }
   }
 
 }
