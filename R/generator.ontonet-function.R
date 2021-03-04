@@ -463,6 +463,8 @@ generator.ontonet=function(tidy_set
       layer_aux_output(
         filters=max(20,ceiling(0.3*C))
         ,units=max(20,ceiling(0.3*C))
+        ,output_unit=output_unit
+        ,output_activation=output_activation
         ,kernel_initializer=init
         ,kernel_initializer2=init2
         ,activity_regularizer=reg
