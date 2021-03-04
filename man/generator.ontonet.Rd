@@ -9,7 +9,9 @@ generator.ontonet(
   path = NULL,
   init_seed = 888,
   init2_seed = 9999,
-  l2_norm = 0
+  l2_norm = 0,
+  output_unit = 1,
+  output_activation = "sigmoid"
 )
 }
 \arguments{
@@ -22,6 +24,12 @@ generator.ontonet(
 \item{init2_seed}{An integer of random seed for tanh initializer.}
 
 \item{l2_norm}{A numeric of L2-norm regularization factor.}
+
+\item{output_unit}{An integer  of how many node for every output layer.}
+
+\item{output_activation}{A character  of activation function name for all
+nodes in every output layer, i.e. sigmoid, softmax, tanh, relu, exponential,
+softplus, softsign, selu, elu. If linear, set this value as NULL.}
 }
 \value{
 output Keras model object, a pointer to Keras model object in python
