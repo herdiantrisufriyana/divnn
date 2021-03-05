@@ -43,7 +43,9 @@ generator.ontonet=function(tidy_set
                            ,path=NULL
                            ,init_seed=888
                            ,init2_seed=9999
-                           ,l2_norm=0){
+                           ,l2_norm=0
+                           ,output_unit=1
+                           ,output_activation='sigmoid'){
 
   # Recall ontomap
   ontomap=
@@ -228,6 +230,8 @@ generator.ontonet=function(tidy_set
   layer_aux_output=function(object
                             ,filters
                             ,units
+                            ,output_unit=1
+                            ,output_activation='sigmoid'
                             ,kernel_initializer
                             ,kernel_initializer2
                             ,activity_regularizer
@@ -278,8 +282,8 @@ generator.ontonet=function(tidy_set
       layer_batch_normalization(name=paste0(name,'_ao_bn')) %>%
       layer_flatten(name=paste0(name,'_ao_fl')) %>%
       layer_dense(
-        units=1
-        ,activation='sigmoid'
+        units=output_unit
+        ,activation=output_activation
         ,kernel_initializer=kernel_initializer2
         ,activity_regularizer=activity_regularizer
         ,name=name
@@ -290,6 +294,8 @@ generator.ontonet=function(tidy_set
   # Build a function to insert output layers
   layer_output=function(object
                         ,units
+                        ,output_unit=1
+                        ,output_activation='sigmoid'
                         ,kernel_initializer
                         ,kernel_initializer2
                         ,activity_regularizer
@@ -320,8 +326,8 @@ generator.ontonet=function(tidy_set
       layer_batch_normalization(name=paste0(name,'_mo_bn')) %>%
       layer_flatten(name=paste0(name,'_mo_fl')) %>%
       layer_dense(
-        units=1
-        ,activation='sigmoid'
+        units=output_unit
+        ,activation=output_activation
         ,kernel_initializer=kernel_initializer2
         ,activity_regularizer=activity_regularizer
         ,name=name
@@ -457,6 +463,8 @@ generator.ontonet=function(tidy_set
       layer_aux_output(
         filters=max(20,ceiling(0.3*C))
         ,units=max(20,ceiling(0.3*C))
+        ,output_unit=output_unit
+        ,output_activation=output_activation
         ,kernel_initializer=init
         ,kernel_initializer2=init2
         ,activity_regularizer=reg
@@ -505,6 +513,8 @@ generator.ontonet=function(tidy_set
         layer_aux_output(
           filters=max(20,ceiling(0.3*C))
           ,units=max(20,ceiling(0.3*C))
+          ,output_unit=output_unit
+          ,output_activation=output_activation
           ,kernel_initializer=init
           ,kernel_initializer2=init2
           ,activity_regularizer=reg
@@ -515,6 +525,8 @@ generator.ontonet=function(tidy_set
         hiddens[[A]] %>%
         layer_output(
           units=max(20,ceiling(0.3*C))
+          ,output_unit=output_unit
+          ,output_activation=output_activation
           ,kernel_initializer=init
           ,kernel_initializer2=init2
           ,activity_regularizer=reg
