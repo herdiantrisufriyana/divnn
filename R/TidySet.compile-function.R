@@ -145,6 +145,7 @@ TidySet.compile=function(value
         }
       ) %>%
       do.call(rbind,.) %>%
+      `rownames<-`(NULL) %>%
       column_to_rownames(var='feature') %>%
       .[match(rownames(similarity),rownames(.)),] %>%
       select(x,y,z) %>%
