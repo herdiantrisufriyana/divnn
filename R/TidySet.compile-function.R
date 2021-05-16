@@ -229,7 +229,8 @@ TidySet.compile=function(value
   setpb(pb,3)
   adata=
     fboth %>%
-    select(-feature) %>%
+    select(-feature) %>% 
+    `rownames<-`(NULL) %>%
     column_to_rownames(var='pos_id') %>%
     t() %>%
     t()
