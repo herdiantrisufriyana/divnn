@@ -196,7 +196,7 @@ TidySet.compile=function(value
     setNames(c('x','y','z')) %>%
     arrange(z,y,x) %>%
     left_join(rownames_to_column(fmap,var='feature'),by=c('x','y','z')) %>%
-    cbind(fval[.$feature,]) %>%
+    cbind(fval[.$feature,,drop=F]) %>%
     mutate(x=paste0('x',x)) %>%
     unite(pos_id,x,y,sep='y') %>%
     unite(pos_id,pos_id,z,sep='z')
