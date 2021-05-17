@@ -145,6 +145,7 @@ TidySet.compile=function(value
         }
       ) %>%
       do.call(rbind,.) %>%
+      `rownames<-`(NULL) %>%
       column_to_rownames(var='feature') %>%
       .[match(rownames(similarity),rownames(.)),] %>%
       select(x,y,z) %>%
@@ -195,7 +196,7 @@ TidySet.compile=function(value
     setNames(c('x','y','z')) %>%
     arrange(z,y,x) %>%
     left_join(rownames_to_column(fmap,var='feature'),by=c('x','y','z')) %>%
-    cbind(fval[.$feature,]) %>%
+    cbind(fval[.$feature,,drop=F]) %>%
     mutate(x=paste0('x',x)) %>%
     unite(pos_id,x,y,sep='y') %>%
     unite(pos_id,pos_id,z,sep='z')
@@ -229,6 +230,7 @@ TidySet.compile=function(value
   adata=
     fboth %>%
     select(-feature) %>% 
+    `rownames<-`(NULL) %>%
     column_to_rownames(var='pos_id') %>%
     t() %>%
     t()
