@@ -145,7 +145,6 @@ TidySet.compile=function(value
         }
       ) %>%
       do.call(rbind,.) %>%
-      `rownames<-`(NULL) %>%
       column_to_rownames(var='feature') %>%
       .[match(rownames(similarity),rownames(.)),] %>%
       select(x,y,z) %>%
@@ -230,7 +229,6 @@ TidySet.compile=function(value
   adata=
     fboth %>%
     select(-feature) %>% 
-    `rownames<-`(NULL) %>%
     column_to_rownames(var='pos_id') %>%
     t() %>%
     t()
