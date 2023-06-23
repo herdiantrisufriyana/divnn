@@ -33,7 +33,7 @@ setup(
       ,'scipy>=1.5.0'
       ,'dfply>=0.3.3'
       ,'progressbar>=2.5'
-      ,'sklearn>=0.0'
+      ,'scikit-learn>=0.0'
       ,'tensorflow-gpu==2.0.0'
     ]
   ,URL='https://github.com/herdiantrisufriyana/divnn'
