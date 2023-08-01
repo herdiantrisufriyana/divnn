@@ -200,30 +200,41 @@ TidySet.compile=function(value
     mutate(x=paste0('x',x)) %>%
     unite(pos_id,x,y,sep='y') %>%
     unite(pos_id,pos_id,z,sep='z')
-
+  
   ori_ontology=ontology
-
+  
   while(sum(str_detect(ontology$source,'ONT\\:'))>0){
     ontology=
       ontology %>%
-      lapply(X=1:nrow(.),Y=.,function(X,Y){
-        if(str_detect(Y$source[X],'ONT\\:')){
-          Z=filter(Y,target==Y$source[X] & relation=='feature')
-          if(nrow(Z)>0){
-            data.frame(
-              source=Z$source
-              ,target=Y$target[X]
-              ,similarity=Y$similarity[X]
-              ,relation='feature'
-            )
-          }else{
-            Y[X,]
-          }
-        }else{
-          Y[X,]
+      mutate(seq=seq(nrow(.)))
+    for(X in seq(nrow(ontology))){
+      Y=ontology %>%
+        filter(seq==X)
+      Z=ontology %>%
+        filter(seq!=X)
+      if(str_detect(Y$source[1],'ONT\\:')){
+        K=ontology %>%
+          filter(target==Y$source[1] & relation=='feature')
+        if(nrow(K)>0) {
+          Y=data.frame(
+            source=K$source
+            ,target=Y$target[1]
+            ,similarity=Y$similarity[1]
+            ,relation='feature'
+            ,seq=Y$seq[1]
+          )
         }
-      }) %>%
-      do.call(rbind,.)
+      }
+      ontology=
+        Y %>%
+        rbind(Z) %>%
+        arrange(seq)
+    }
+    rm(X,Y,Z,K)
+    ontology=
+      ontology %>%
+      select(-seq) %>%
+      filter(!duplicated(.))
   }
 
   setpb(pb,3)
